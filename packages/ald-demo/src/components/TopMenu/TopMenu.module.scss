@@ -1,0 +1,31 @@
+@import '../../styles/variables.scss';
+
+.root {
+
+    .logo {
+        color: $secondary;   
+        
+        &:before {
+            color: $primary;
+            content: '(';
+        }
+        &:after {
+            color: $primary;
+            content: ')';
+        }
+
+    }
+
+    .appName {
+        font-weight: bold;
+    }
+
+    .primary {
+        color: $primary;
+    }
+
+    .secondary {
+        color: $secondary;
+    }
+
+}
