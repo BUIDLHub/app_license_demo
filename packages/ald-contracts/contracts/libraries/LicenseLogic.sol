@@ -9,7 +9,7 @@ library LicenseLogic {
 
 
     //event emitted when a new vendor is registered
-    event VendorRegistered(uint256 indexed vendorId, string name);
+    event VendorRegistered(uint256 indexed vendorID, string name);
 
     //event emitted when a product is registered
     event ProductRegistered(uint256 productID, string name);
@@ -18,8 +18,10 @@ library LicenseLogic {
     event SpecsRegistered(uint256 indexed productID, uint256 indexed specID, uint256 attributes, string name, uint256 price, uint256 duration);
 
      //event emitted when a license purchase is made
-    event LicenseIssued(address indexed owner, uint256 indexed productID, uint256 specID, uint256 licenseID);
+    event LicenseIssued(address indexed owner, uint256 indexed productID, uint256 specID, uint256 licenseID, uint256 expiration);
 
+    //event emitted when vendor withdraws balance of license fees
+    event VendorWithdraw(address indexed vendor, uint256 amount);
 
      /**
      * @dev register a vendor that can create products
@@ -31,11 +33,25 @@ library LicenseLogic {
         main._vendorCount = main._vendorCount.add(1);
         uint256 id = main._vendorCount;
         main.vendors[id] = LicenseStorage.Vendor({
+            balance: 0,
             productIDs: new uint256[](0),
             name: _name
         });
         main.vendorIDsByAddress[msg.sender] = id;
         emit VendorRegistered(id, _name);
+    }
+
+    /**
+     * @dev get vendor information for a registered vendor with the given address
+     * @param main is contract storage
+     * @param _vendor is the vendor address
+     */
+    function vendorInfo(LicenseStorage.MainStorage storage main, address _vendor)
+            internal view returns(uint256, uint256, string memory) {
+       uint256 vid = main.vendorIDsByAddress[_vendor];
+       require(vid > 0, "Vendor Not Registered ");
+       LicenseStorage.Vendor storage v = main.vendors[vid];
+       return (vid, v.productIDs.length, v.name);
     }
 
     /**
@@ -47,6 +63,24 @@ library LicenseLogic {
         require(_vendorId > 0, "Invalid Vendor ID");
         LicenseStorage.Vendor storage v = main.vendors[_vendorId];
         return v.name;
+    }
+
+    /**
+     * @dev get a vendor's name by its registration address
+     * @param main is contract storage
+     * @param vend is the vendor address
+     */
+    function vendorNameByAddress(LicenseStorage.MainStorage storage main, address vend) internal view returns(string memory) {
+        uint256 vid = main.vendorIDsByAddress[vend];
+        require(vid > 0, "Unregistered Vendor");
+        return main.vendors[vid].name;
+    }
+
+    /**
+     * @dev Check whether the given address belongs to a registered vendor
+    */
+    function isRegisteredVendor(LicenseStorage.MainStorage storage main, address _vendor) internal view returns(bool) {
+        return main.vendorIDsByAddress[_vendor] > 0;
     }
 
     /**
@@ -69,16 +103,32 @@ library LicenseLogic {
     }
 
     /**
+     * @dev get vendor product info at a specific id offset in the vendor's product list
+     * @param main is the contract storage
+     * @param _vendorId is the vendor id to query
+     * @param _index is the offset for product id
+     */
+    function vendorProductInfo(LicenseStorage.MainStorage storage main, uint256 _vendorId, uint256 _index)
+            internal view returns(uint256, uint256, uint256, uint256, string memory) {
+        require(_vendorId > 0, "Invalid vendor ID");
+        LicenseStorage.Vendor storage v = main.vendors[_vendorId];
+        require(_index < v.productIDs.length, "Index out of bounds");
+        
+        uint256 id = v.productIDs[_index];
+        return productInfo(main, id);
+    }
+
+    /**
      * @dev Get product vendor, spec count, license count, and name registered with the given id
      * @param main is main storage
      * @param _prodID is product id
      */
     function productInfo(LicenseStorage.MainStorage storage main, uint256 _prodID)
-            internal view returns(uint256, uint256, uint256, string memory) {
+            internal view returns(uint256, uint256, uint256, uint256, string memory) {
         require(_prodID > 0, "Invalid Product ID");
         LicenseStorage.Product storage p = main.products[_prodID];
         require(p.vendorID > 0, "Unregistered Product");
-        return (p.vendorID, p._specCount, p._licenseCount, p.name);
+        return (p.vendorID, _prodID, p._specCount, p._licenseCount, p.name);
     }
 
     /**
@@ -124,7 +174,7 @@ library LicenseLogic {
             internal view returns(uint256, uint256, uint256, string memory) {
         //price, attributes, duration, name
         require(_productID > 0, "Invalid Product ID");
-        require(_specID > 0, "Invalid Product ID");
+        require(_specID > 0, "Invalid Spec ID");
         LicenseStorage.Product storage p = main.products[_productID];
         require(p.vendorID > 0, "Unregistered product");
         LicenseStorage.LicenseSpecs storage s = p.specs[_specID];
@@ -145,6 +195,9 @@ library LicenseLogic {
         require(_specID > 0, "Invalid Spec ID");
         LicenseStorage.Product storage prod = main.products[_productID];
         require(prod.vendorID > 0, "Unregistered Product");
+
+        LicenseStorage.Vendor storage vendor = main.vendors[prod.vendorID];
+        require(vendor.productIDs.length > 0, "Invalid product id");
 
         LicenseStorage.LicenseSpecs storage spec = prod.specs[_specID];
         require(spec.hasData, "Unknown Spec");
@@ -170,7 +223,10 @@ library LicenseLogic {
             licenseID: lid,
             verificationNonce: 0
         });
-        emit LicenseIssued(msg.sender, _productID, _specID, lid);
+
+        //TODO: Could take a dev-share here.
+        vendor.balance = vendor.balance.add(_payment);
+        emit LicenseIssued(msg.sender, _productID, _specID, lid, exp);
         return lid;
     }
 
@@ -188,6 +244,21 @@ library LicenseLogic {
         LicenseStorage.LicenseSpecs storage s = p.specs[l.specID];
         require(s.hasData, "Invalid Lisense ID");
         return (l.productID, s.attributes, l.expiration, l.issuedBlock);
+    }
+
+    /**
+     * @dev withdraw license fees from vendor's account
+     * @param main is the storage for contract
+     */
+    function withdrawVendorBalance(LicenseStorage.MainStorage storage main) internal {
+        require(_vendorExists(main, msg.sender), "Not a registered vendor");
+        uint256 vid = main.vendorIDsByAddress[msg.sender];
+        LicenseStorage.Vendor storage v = main.vendors[vid];
+        require(v.balance > 0, "Nothing to withdraw");
+        uint amt = v.balance;
+        v.balance = 0;
+        msg.sender.transfer(amt);
+        emit VendorWithdraw(msg.sender, amt);
     }
 
     /**

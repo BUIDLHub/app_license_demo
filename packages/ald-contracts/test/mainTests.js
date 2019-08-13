@@ -25,7 +25,7 @@ contract("Proxy", (accounts)=>{
     
     it("Should reflect default root vendor and product info", done=>{
         main.productInfo.call(1, {from: accounts[0]}).then(info=>{
-                if(info[3] !== 'RootProduct') {
+                if(info[4] !== 'RootProduct') {
                     return done(new Error("Expected product with id 1 to be RootProduct: " + info[3]));
                 }
                 done();
@@ -36,9 +36,13 @@ contract("Proxy", (accounts)=>{
 
     it("Should register new vendor", done=>{
         main.registerProduct("NewProduct", {from: accounts[0]}).then(()=>{
-            main.productInfo.call(2).then(info=>{
-                if(info[3] !== 'NewProduct') {
+            main.productInfo.call(2).then(async info=>{
+                if(info[4] !== 'NewProduct') {
                     return done(new Error("Did not register new product: " + info[3]));
+                }
+                let isReg = await main.isRegisteredVendor.call(accounts[0]);
+                if(!isReg) {
+                    return done(new Error("Expected to be a registered vendor"));
                 }
                 done();
             })
@@ -137,6 +141,25 @@ contract("Proxy", (accounts)=>{
             })
         });
     });
+
+    it("Should transfer balance back to vendor after purchase", done=>{
+      //main.registerLicenseSpecs(1, 0, "NewFeature", 250000, 86400).then(async ()=>{
+      //      
+        web3.eth.getBalance(accounts[1]).then(async customerBal=>{
+            console.log("Customer balance", customerBal);
+            main.issueLicense(1, 1, {from: accounts[1], value: 2500000}).then(async ()=>{
+                let bal = await web3.eth.getBalance(accounts[0]);
+                bal = web3.utils.toBN(bal);
+                
+                main.withdrawVendorBalance({from: accounts[0]}).then(async (r)=>{
+                    
+                    done();
+                });
+            });
+        });
+            
+        //});
+    })
     
 
     /*

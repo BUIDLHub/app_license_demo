@@ -9,11 +9,20 @@ contract LicenseManager {
     using LicenseLogic for LicenseStorage.MainStorage;
     using SafeMath for uint256;
 
-     //event emitted when a license purchase is made
-    event LicenseIssued(address indexed owner, uint256 indexed productID, uint256 specID, uint256 licenseID);
+    //event emitted when a new vendor is registered
+    event VendorRegistered(uint256 indexed vendorID, string name);
 
-    //event emitted when registered new license specifications
+    //event emitted when a product is registered
+    event ProductRegistered(uint256 productID, string name);
+
+     //event emitted when registered new license specifications
     event SpecsRegistered(uint256 indexed productID, uint256 indexed specID, uint256 attributes, string name, uint256 price, uint256 duration);
+
+     //event emitted when a license purchase is made
+    event LicenseIssued(address indexed owner, uint256 indexed productID, uint256 specID, uint256 licenseID, uint256 expiration);
+
+    //event emitted when vendor withdraws balance of license fees
+    event VendorWithdraw(address indexed vendor, uint256 amount);
 
     LicenseStorage.MainStorage mainStorage;
     LicenseToken erc721;

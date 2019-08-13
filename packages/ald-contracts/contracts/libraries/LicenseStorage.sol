@@ -12,6 +12,9 @@ library LicenseStorage {
      * @dev Vendor represents a product provider and holds all registered product IDs
     */
     struct Vendor {
+        //revenue balance
+        uint256 balance;
+
         //all product IDs for this vendor
         uint256[] productIDs;
 

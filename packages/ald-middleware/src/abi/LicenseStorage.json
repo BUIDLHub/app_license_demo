@@ -1,0 +1,1970 @@
+{
+  "contractName": "LicenseStorage",
+  "abi": [],
+  "metadata": "{\"compiler\":{\"version\":\"0.5.8+commit.23d335f2\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"details\":\"Contains all the storage members for the Licensing logic contracts\",\"methods\":{},\"title\":\"LicenseStorage\"},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/Users/mdcoon/git/app_license_demo/packages/ald-contracts/contracts/libraries/LicenseStorage.sol\":\"LicenseStorage\"},\"evmVersion\":\"petersburg\",\"libraries\":{},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/Users/mdcoon/git/app_license_demo/packages/ald-contracts/contracts/libraries/LicenseStorage.sol\":{\"keccak256\":\"0x263e71d762bca07eb991c1729c3e03fb84678104ddb85594a8a4c8fc3d0172d0\",\"urls\":[\"bzzr://b5bef29d7d1c81851490014b28ea3feb05f88d825a4f098b7625f4136aba8ca5\"]}},\"version\":1}",
+  "bytecode": "0x604c6023600b82828239805160001a607314601657fe5b30600052607381538281f3fe73000000000000000000000000000000000000000030146080604052600080fdfea165627a7a723058204fa1fcc949299cb086937c670983f74812327ac38ea0eb6bf7090b275de819280029",
+  "deployedBytecode": "0x73000000000000000000000000000000000000000030146080604052600080fdfea165627a7a723058204fa1fcc949299cb086937c670983f74812327ac38ea0eb6bf7090b275de819280029",
+  "sourceMap": "141:3537:5:-;;132:2:-1;166:7;155:9;146:7;137:37;255:7;249:14;246:1;241:23;235:4;232:33;222:2;;269:9;222:2;293:9;290:1;283:20;323:4;314:7;306:22;347:7;338;331:24",
+  "deployedSourceMap": "141:3537:5:-;;;;;;;;",
+  "source": "pragma solidity >=0.4.21 <0.6.0;\n\n/**\n * @title LicenseStorage\n * @dev Contains all the storage members for the Licensing logic contracts\n*/\nlibrary LicenseStorage {\n    \n    \n    /**\n     * @title Vendor\n     * @dev Vendor represents a product provider and holds all registered product IDs\n    */\n    struct Vendor {\n        //revenue balance\n        uint256 balance;\n\n        //all product IDs for this vendor\n        uint256[] productIDs;\n\n        //name of the vendor\n        string name;\n    }\n\n    /**\n     * @title Product\n     * @dev Product holds metadata for itself, its licenses, and purchase history\n    */\n    struct Product {\n\n        //the vendor that owns this product\n        uint256 vendorID;\n\n        //id counter for specs associated with this product\n        uint256 _specCount;\n\n        //number of licenses issued for this product\n        uint256 _licenseCount;\n\n        //the name of this product\n        string name;\n\n        //mapping of license spec ids to specs\n        mapping(uint256=>LicenseSpecs) specs;\n    }\n\n    /**\n      * @title LicenseMetadata\n      * @dev metadata for a license specification licensee that is mapped to an address\n    */\n    struct LicenseMetadata {\n\n        //license id held by some address\n        uint256 licenseID;\n\n        //a counter nonce to prevent replay attacks when signing authorization hash for access\n        uint256 verificationNonce;\n    }\n\n    /**\n     * @title LicenseSpecs\n     * @dev LicenseSpecs holds fields for purchasing and creating license instances\n    */\n    struct LicenseSpecs {\n        //the price for the license in wei\n        uint256 price;\n\n        //custom attributes to associate with issued licenses\n        uint256 attributes;\n\n        //the duration of the license. Zero indicates no expiration\n        uint256 duration;\n\n        //used for null-checks primarily\n        bool hasData;\n\n        //name of the license being issued (feature name, etc.)\n        string name;\n\n        //the spec is the lowest level element of the hierarchy prior to issuing license NFT.\n        //At this level, addresses should only have a single license that hold these\n        //specs. This mapping is from their address to the unique license ID\n        mapping(address => LicenseMetadata) licensees;\n    }\n\n    /**\n     * @title License\n     * @dev License holds fields for product feature licenses\n    */\n     struct License {\n\n        //product this license is associated with\n        uint256 productID;\n\n        //the actual specification ID this license is based on\n        uint256 specID;\n\n        //when the license expires\n        uint256 expiration;\n\n        //the block in which this license was issued.\n        uint256 issuedBlock;\n    }\n\n    /**\n     * @title MainStorage\n     * @dev Storage for the entire contract. This can be fronted by Proxy contract separating\n     * logic from data. Do NOT alter order of variables once deployed as this will corrupt\n     * all existing stored data. You can append new fields as needed.\n    */\n    struct MainStorage {\n\n        //vendor ID counter\n        uint256 _vendorCount;\n\n        //product ID counter\n        uint256 _productCount;\n\n        //license ID counter\n        uint256 _licenseCount;\n\n        //flag to make sure we're only used by the proxy contract\n        bool proxied;\n\n        //vendors by id\n        mapping(uint256=>Vendor) vendors;\n\n        //mapping of vendor's address to its offset in the vendor list\n        mapping(address => uint256) vendorIDsByAddress;\n\n        //licenses by id\n        mapping(uint256=>License) licenses;\n\n        //products by id\n        mapping(uint256 => Product) products;\n\n       \n    }\n\n   \n}",
+  "sourcePath": "/Users/mdcoon/git/app_license_demo/packages/ald-contracts/contracts/libraries/LicenseStorage.sol",
+  "ast": {
+    "absolutePath": "/Users/mdcoon/git/app_license_demo/packages/ald-contracts/contracts/libraries/LicenseStorage.sol",
+    "exportedSymbols": {
+      "LicenseStorage": [
+        1796
+      ]
+    },
+    "id": 1797,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 1720,
+        "literals": [
+          "solidity",
+          ">=",
+          "0.4",
+          ".21",
+          "<",
+          "0.6",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:32:5"
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "library",
+        "documentation": "@title LicenseStorage\n@dev Contains all the storage members for the Licensing logic contracts",
+        "fullyImplemented": true,
+        "id": 1796,
+        "linearizedBaseContracts": [
+          1796
+        ],
+        "name": "LicenseStorage",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "canonicalName": "LicenseStorage.Vendor",
+            "id": 1728,
+            "members": [
+              {
+                "constant": false,
+                "id": 1722,
+                "name": "balance",
+                "nodeType": "VariableDeclaration",
+                "scope": 1728,
+                "src": "352:15:5",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 1721,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "352:7:5",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 1725,
+                "name": "productIDs",
+                "nodeType": "VariableDeclaration",
+                "scope": 1728,
+                "src": "420:20:5",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_array$_t_uint256_$dyn_storage_ptr",
+                  "typeString": "uint256[]"
+                },
+                "typeName": {
+                  "baseType": {
+                    "id": 1723,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "420:7:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 1724,
+                  "length": null,
+                  "nodeType": "ArrayTypeName",
+                  "src": "420:9:5",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_uint256_$dyn_storage_ptr",
+                    "typeString": "uint256[]"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 1727,
+                "name": "name",
+                "nodeType": "VariableDeclaration",
+                "scope": 1728,
+                "src": "480:11:5",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_string_storage_ptr",
+                  "typeString": "string"
+                },
+                "typeName": {
+                  "id": 1726,
+                  "name": "string",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "480:6:5",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_storage_ptr",
+                    "typeString": "string"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              }
+            ],
+            "name": "Vendor",
+            "nodeType": "StructDefinition",
+            "scope": 1796,
+            "src": "302:196:5",
+            "visibility": "public"
+          },
+          {
+            "canonicalName": "LicenseStorage.Product",
+            "id": 1741,
+            "members": [
+              {
+                "constant": false,
+                "id": 1730,
+                "name": "vendorID",
+                "nodeType": "VariableDeclaration",
+                "scope": 1741,
+                "src": "693:16:5",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 1729,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "693:7:5",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 1732,
+                "name": "_specCount",
+                "nodeType": "VariableDeclaration",
+                "scope": 1741,
+                "src": "780:18:5",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 1731,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "780:7:5",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 1734,
+                "name": "_licenseCount",
+                "nodeType": "VariableDeclaration",
+                "scope": 1741,
+                "src": "862:21:5",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 1733,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "862:7:5",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 1736,
+                "name": "name",
+                "nodeType": "VariableDeclaration",
+                "scope": 1741,
+                "src": "929:11:5",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_string_storage_ptr",
+                  "typeString": "string"
+                },
+                "typeName": {
+                  "id": 1735,
+                  "name": "string",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "929:6:5",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_storage_ptr",
+                    "typeString": "string"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 1740,
+                "name": "specs",
+                "nodeType": "VariableDeclaration",
+                "scope": 1741,
+                "src": "998:36:5",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_LicenseSpecs_$1761_storage_$",
+                  "typeString": "mapping(uint256 => struct LicenseStorage.LicenseSpecs)"
+                },
+                "typeName": {
+                  "id": 1739,
+                  "keyType": {
+                    "id": 1737,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1006:7:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "nodeType": "Mapping",
+                  "src": "998:30:5",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_LicenseSpecs_$1761_storage_$",
+                    "typeString": "mapping(uint256 => struct LicenseStorage.LicenseSpecs)"
+                  },
+                  "valueType": {
+                    "contractScope": null,
+                    "id": 1738,
+                    "name": "LicenseSpecs",
+                    "nodeType": "UserDefinedTypeName",
+                    "referencedDeclaration": 1761,
+                    "src": "1015:12:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_struct$_LicenseSpecs_$1761_storage_ptr",
+                      "typeString": "struct LicenseStorage.LicenseSpecs"
+                    }
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              }
+            ],
+            "name": "Product",
+            "nodeType": "StructDefinition",
+            "scope": 1796,
+            "src": "623:418:5",
+            "visibility": "public"
+          },
+          {
+            "canonicalName": "LicenseStorage.LicenseMetadata",
+            "id": 1746,
+            "members": [
+              {
+                "constant": false,
+                "id": 1743,
+                "name": "licenseID",
+                "nodeType": "VariableDeclaration",
+                "scope": 1746,
+                "src": "1257:17:5",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 1742,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "1257:7:5",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 1745,
+                "name": "verificationNonce",
+                "nodeType": "VariableDeclaration",
+                "scope": 1746,
+                "src": "1380:25:5",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 1744,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "1380:7:5",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              }
+            ],
+            "name": "LicenseMetadata",
+            "nodeType": "StructDefinition",
+            "scope": 1796,
+            "src": "1181:231:5",
+            "visibility": "public"
+          },
+          {
+            "canonicalName": "LicenseStorage.LicenseSpecs",
+            "id": 1761,
+            "members": [
+              {
+                "constant": false,
+                "id": 1748,
+                "name": "price",
+                "nodeType": "VariableDeclaration",
+                "scope": 1761,
+                "src": "1617:13:5",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 1747,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "1617:7:5",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 1750,
+                "name": "attributes",
+                "nodeType": "VariableDeclaration",
+                "scope": 1761,
+                "src": "1703:18:5",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 1749,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "1703:7:5",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 1752,
+                "name": "duration",
+                "nodeType": "VariableDeclaration",
+                "scope": 1761,
+                "src": "1800:16:5",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 1751,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "1800:7:5",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 1754,
+                "name": "hasData",
+                "nodeType": "VariableDeclaration",
+                "scope": 1761,
+                "src": "1868:12:5",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_bool",
+                  "typeString": "bool"
+                },
+                "typeName": {
+                  "id": 1753,
+                  "name": "bool",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "1868:4:5",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 1756,
+                "name": "name",
+                "nodeType": "VariableDeclaration",
+                "scope": 1761,
+                "src": "1955:11:5",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_string_storage_ptr",
+                  "typeString": "string"
+                },
+                "typeName": {
+                  "id": 1755,
+                  "name": "string",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "1955:6:5",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_storage_ptr",
+                    "typeString": "string"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 1760,
+                "name": "licensees",
+                "nodeType": "VariableDeclaration",
+                "scope": 1761,
+                "src": "2233:45:5",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_mapping$_t_address_$_t_struct$_LicenseMetadata_$1746_storage_$",
+                  "typeString": "mapping(address => struct LicenseStorage.LicenseMetadata)"
+                },
+                "typeName": {
+                  "id": 1759,
+                  "keyType": {
+                    "id": 1757,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2241:7:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "nodeType": "Mapping",
+                  "src": "2233:35:5",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_mapping$_t_address_$_t_struct$_LicenseMetadata_$1746_storage_$",
+                    "typeString": "mapping(address => struct LicenseStorage.LicenseMetadata)"
+                  },
+                  "valueType": {
+                    "contractScope": null,
+                    "id": 1758,
+                    "name": "LicenseMetadata",
+                    "nodeType": "UserDefinedTypeName",
+                    "referencedDeclaration": 1746,
+                    "src": "2252:15:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_struct$_LicenseMetadata_$1746_storage_ptr",
+                      "typeString": "struct LicenseStorage.LicenseMetadata"
+                    }
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              }
+            ],
+            "name": "LicenseSpecs",
+            "nodeType": "StructDefinition",
+            "scope": 1796,
+            "src": "1544:741:5",
+            "visibility": "public"
+          },
+          {
+            "canonicalName": "LicenseStorage.License",
+            "id": 1770,
+            "members": [
+              {
+                "constant": false,
+                "id": 1763,
+                "name": "productID",
+                "nodeType": "VariableDeclaration",
+                "scope": 1770,
+                "src": "2467:17:5",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 1762,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "2467:7:5",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 1765,
+                "name": "specID",
+                "nodeType": "VariableDeclaration",
+                "scope": 1770,
+                "src": "2558:14:5",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 1764,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "2558:7:5",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 1767,
+                "name": "expiration",
+                "nodeType": "VariableDeclaration",
+                "scope": 1770,
+                "src": "2618:18:5",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 1766,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "2618:7:5",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 1769,
+                "name": "issuedBlock",
+                "nodeType": "VariableDeclaration",
+                "scope": 1770,
+                "src": "2701:19:5",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 1768,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "2701:7:5",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              }
+            ],
+            "name": "License",
+            "nodeType": "StructDefinition",
+            "scope": 1796,
+            "src": "2391:336:5",
+            "visibility": "public"
+          },
+          {
+            "canonicalName": "LicenseStorage.MainStorage",
+            "id": 1795,
+            "members": [
+              {
+                "constant": false,
+                "id": 1772,
+                "name": "_vendorCount",
+                "nodeType": "VariableDeclaration",
+                "scope": 1795,
+                "src": "3087:20:5",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 1771,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "3087:7:5",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 1774,
+                "name": "_productCount",
+                "nodeType": "VariableDeclaration",
+                "scope": 1795,
+                "src": "3147:21:5",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 1773,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "3147:7:5",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 1776,
+                "name": "_licenseCount",
+                "nodeType": "VariableDeclaration",
+                "scope": 1795,
+                "src": "3208:21:5",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 1775,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "3208:7:5",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 1778,
+                "name": "proxied",
+                "nodeType": "VariableDeclaration",
+                "scope": 1795,
+                "src": "3306:12:5",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_bool",
+                  "typeString": "bool"
+                },
+                "typeName": {
+                  "id": 1777,
+                  "name": "bool",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "3306:4:5",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 1782,
+                "name": "vendors",
+                "nodeType": "VariableDeclaration",
+                "scope": 1795,
+                "src": "3353:32:5",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Vendor_$1728_storage_$",
+                  "typeString": "mapping(uint256 => struct LicenseStorage.Vendor)"
+                },
+                "typeName": {
+                  "id": 1781,
+                  "keyType": {
+                    "id": 1779,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "3361:7:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "nodeType": "Mapping",
+                  "src": "3353:24:5",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Vendor_$1728_storage_$",
+                    "typeString": "mapping(uint256 => struct LicenseStorage.Vendor)"
+                  },
+                  "valueType": {
+                    "contractScope": null,
+                    "id": 1780,
+                    "name": "Vendor",
+                    "nodeType": "UserDefinedTypeName",
+                    "referencedDeclaration": 1728,
+                    "src": "3370:6:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_struct$_Vendor_$1728_storage_ptr",
+                      "typeString": "struct LicenseStorage.Vendor"
+                    }
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 1786,
+                "name": "vendorIDsByAddress",
+                "nodeType": "VariableDeclaration",
+                "scope": 1795,
+                "src": "3467:46:5",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
+                  "typeString": "mapping(address => uint256)"
+                },
+                "typeName": {
+                  "id": 1785,
+                  "keyType": {
+                    "id": 1783,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "3475:7:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "nodeType": "Mapping",
+                  "src": "3467:27:5",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
+                    "typeString": "mapping(address => uint256)"
+                  },
+                  "valueType": {
+                    "id": 1784,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "3486:7:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 1790,
+                "name": "licenses",
+                "nodeType": "VariableDeclaration",
+                "scope": 1795,
+                "src": "3549:34:5",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_License_$1770_storage_$",
+                  "typeString": "mapping(uint256 => struct LicenseStorage.License)"
+                },
+                "typeName": {
+                  "id": 1789,
+                  "keyType": {
+                    "id": 1787,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "3557:7:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "nodeType": "Mapping",
+                  "src": "3549:25:5",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_License_$1770_storage_$",
+                    "typeString": "mapping(uint256 => struct LicenseStorage.License)"
+                  },
+                  "valueType": {
+                    "contractScope": null,
+                    "id": 1788,
+                    "name": "License",
+                    "nodeType": "UserDefinedTypeName",
+                    "referencedDeclaration": 1770,
+                    "src": "3566:7:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_struct$_License_$1770_storage_ptr",
+                      "typeString": "struct LicenseStorage.License"
+                    }
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 1794,
+                "name": "products",
+                "nodeType": "VariableDeclaration",
+                "scope": 1795,
+                "src": "3619:36:5",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Product_$1741_storage_$",
+                  "typeString": "mapping(uint256 => struct LicenseStorage.Product)"
+                },
+                "typeName": {
+                  "id": 1793,
+                  "keyType": {
+                    "id": 1791,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "3627:7:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "nodeType": "Mapping",
+                  "src": "3619:27:5",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Product_$1741_storage_$",
+                    "typeString": "mapping(uint256 => struct LicenseStorage.Product)"
+                  },
+                  "valueType": {
+                    "contractScope": null,
+                    "id": 1792,
+                    "name": "Product",
+                    "nodeType": "UserDefinedTypeName",
+                    "referencedDeclaration": 1741,
+                    "src": "3638:7:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_struct$_Product_$1741_storage_ptr",
+                      "typeString": "struct LicenseStorage.Product"
+                    }
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              }
+            ],
+            "name": "MainStorage",
+            "nodeType": "StructDefinition",
+            "scope": 1796,
+            "src": "3029:642:5",
+            "visibility": "public"
+          }
+        ],
+        "scope": 1797,
+        "src": "141:3537:5"
+      }
+    ],
+    "src": "0:3678:5"
+  },
+  "legacyAST": {
+    "absolutePath": "/Users/mdcoon/git/app_license_demo/packages/ald-contracts/contracts/libraries/LicenseStorage.sol",
+    "exportedSymbols": {
+      "LicenseStorage": [
+        1796
+      ]
+    },
+    "id": 1797,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 1720,
+        "literals": [
+          "solidity",
+          ">=",
+          "0.4",
+          ".21",
+          "<",
+          "0.6",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:32:5"
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "library",
+        "documentation": "@title LicenseStorage\n@dev Contains all the storage members for the Licensing logic contracts",
+        "fullyImplemented": true,
+        "id": 1796,
+        "linearizedBaseContracts": [
+          1796
+        ],
+        "name": "LicenseStorage",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "canonicalName": "LicenseStorage.Vendor",
+            "id": 1728,
+            "members": [
+              {
+                "constant": false,
+                "id": 1722,
+                "name": "balance",
+                "nodeType": "VariableDeclaration",
+                "scope": 1728,
+                "src": "352:15:5",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 1721,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "352:7:5",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 1725,
+                "name": "productIDs",
+                "nodeType": "VariableDeclaration",
+                "scope": 1728,
+                "src": "420:20:5",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_array$_t_uint256_$dyn_storage_ptr",
+                  "typeString": "uint256[]"
+                },
+                "typeName": {
+                  "baseType": {
+                    "id": 1723,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "420:7:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 1724,
+                  "length": null,
+                  "nodeType": "ArrayTypeName",
+                  "src": "420:9:5",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_uint256_$dyn_storage_ptr",
+                    "typeString": "uint256[]"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 1727,
+                "name": "name",
+                "nodeType": "VariableDeclaration",
+                "scope": 1728,
+                "src": "480:11:5",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_string_storage_ptr",
+                  "typeString": "string"
+                },
+                "typeName": {
+                  "id": 1726,
+                  "name": "string",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "480:6:5",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_storage_ptr",
+                    "typeString": "string"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              }
+            ],
+            "name": "Vendor",
+            "nodeType": "StructDefinition",
+            "scope": 1796,
+            "src": "302:196:5",
+            "visibility": "public"
+          },
+          {
+            "canonicalName": "LicenseStorage.Product",
+            "id": 1741,
+            "members": [
+              {
+                "constant": false,
+                "id": 1730,
+                "name": "vendorID",
+                "nodeType": "VariableDeclaration",
+                "scope": 1741,
+                "src": "693:16:5",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 1729,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "693:7:5",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 1732,
+                "name": "_specCount",
+                "nodeType": "VariableDeclaration",
+                "scope": 1741,
+                "src": "780:18:5",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 1731,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "780:7:5",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 1734,
+                "name": "_licenseCount",
+                "nodeType": "VariableDeclaration",
+                "scope": 1741,
+                "src": "862:21:5",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 1733,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "862:7:5",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 1736,
+                "name": "name",
+                "nodeType": "VariableDeclaration",
+                "scope": 1741,
+                "src": "929:11:5",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_string_storage_ptr",
+                  "typeString": "string"
+                },
+                "typeName": {
+                  "id": 1735,
+                  "name": "string",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "929:6:5",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_storage_ptr",
+                    "typeString": "string"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 1740,
+                "name": "specs",
+                "nodeType": "VariableDeclaration",
+                "scope": 1741,
+                "src": "998:36:5",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_LicenseSpecs_$1761_storage_$",
+                  "typeString": "mapping(uint256 => struct LicenseStorage.LicenseSpecs)"
+                },
+                "typeName": {
+                  "id": 1739,
+                  "keyType": {
+                    "id": 1737,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1006:7:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "nodeType": "Mapping",
+                  "src": "998:30:5",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_LicenseSpecs_$1761_storage_$",
+                    "typeString": "mapping(uint256 => struct LicenseStorage.LicenseSpecs)"
+                  },
+                  "valueType": {
+                    "contractScope": null,
+                    "id": 1738,
+                    "name": "LicenseSpecs",
+                    "nodeType": "UserDefinedTypeName",
+                    "referencedDeclaration": 1761,
+                    "src": "1015:12:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_struct$_LicenseSpecs_$1761_storage_ptr",
+                      "typeString": "struct LicenseStorage.LicenseSpecs"
+                    }
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              }
+            ],
+            "name": "Product",
+            "nodeType": "StructDefinition",
+            "scope": 1796,
+            "src": "623:418:5",
+            "visibility": "public"
+          },
+          {
+            "canonicalName": "LicenseStorage.LicenseMetadata",
+            "id": 1746,
+            "members": [
+              {
+                "constant": false,
+                "id": 1743,
+                "name": "licenseID",
+                "nodeType": "VariableDeclaration",
+                "scope": 1746,
+                "src": "1257:17:5",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 1742,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "1257:7:5",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 1745,
+                "name": "verificationNonce",
+                "nodeType": "VariableDeclaration",
+                "scope": 1746,
+                "src": "1380:25:5",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 1744,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "1380:7:5",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              }
+            ],
+            "name": "LicenseMetadata",
+            "nodeType": "StructDefinition",
+            "scope": 1796,
+            "src": "1181:231:5",
+            "visibility": "public"
+          },
+          {
+            "canonicalName": "LicenseStorage.LicenseSpecs",
+            "id": 1761,
+            "members": [
+              {
+                "constant": false,
+                "id": 1748,
+                "name": "price",
+                "nodeType": "VariableDeclaration",
+                "scope": 1761,
+                "src": "1617:13:5",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 1747,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "1617:7:5",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 1750,
+                "name": "attributes",
+                "nodeType": "VariableDeclaration",
+                "scope": 1761,
+                "src": "1703:18:5",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 1749,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "1703:7:5",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 1752,
+                "name": "duration",
+                "nodeType": "VariableDeclaration",
+                "scope": 1761,
+                "src": "1800:16:5",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 1751,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "1800:7:5",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 1754,
+                "name": "hasData",
+                "nodeType": "VariableDeclaration",
+                "scope": 1761,
+                "src": "1868:12:5",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_bool",
+                  "typeString": "bool"
+                },
+                "typeName": {
+                  "id": 1753,
+                  "name": "bool",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "1868:4:5",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 1756,
+                "name": "name",
+                "nodeType": "VariableDeclaration",
+                "scope": 1761,
+                "src": "1955:11:5",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_string_storage_ptr",
+                  "typeString": "string"
+                },
+                "typeName": {
+                  "id": 1755,
+                  "name": "string",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "1955:6:5",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_storage_ptr",
+                    "typeString": "string"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 1760,
+                "name": "licensees",
+                "nodeType": "VariableDeclaration",
+                "scope": 1761,
+                "src": "2233:45:5",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_mapping$_t_address_$_t_struct$_LicenseMetadata_$1746_storage_$",
+                  "typeString": "mapping(address => struct LicenseStorage.LicenseMetadata)"
+                },
+                "typeName": {
+                  "id": 1759,
+                  "keyType": {
+                    "id": 1757,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2241:7:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "nodeType": "Mapping",
+                  "src": "2233:35:5",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_mapping$_t_address_$_t_struct$_LicenseMetadata_$1746_storage_$",
+                    "typeString": "mapping(address => struct LicenseStorage.LicenseMetadata)"
+                  },
+                  "valueType": {
+                    "contractScope": null,
+                    "id": 1758,
+                    "name": "LicenseMetadata",
+                    "nodeType": "UserDefinedTypeName",
+                    "referencedDeclaration": 1746,
+                    "src": "2252:15:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_struct$_LicenseMetadata_$1746_storage_ptr",
+                      "typeString": "struct LicenseStorage.LicenseMetadata"
+                    }
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              }
+            ],
+            "name": "LicenseSpecs",
+            "nodeType": "StructDefinition",
+            "scope": 1796,
+            "src": "1544:741:5",
+            "visibility": "public"
+          },
+          {
+            "canonicalName": "LicenseStorage.License",
+            "id": 1770,
+            "members": [
+              {
+                "constant": false,
+                "id": 1763,
+                "name": "productID",
+                "nodeType": "VariableDeclaration",
+                "scope": 1770,
+                "src": "2467:17:5",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 1762,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "2467:7:5",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 1765,
+                "name": "specID",
+                "nodeType": "VariableDeclaration",
+                "scope": 1770,
+                "src": "2558:14:5",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 1764,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "2558:7:5",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 1767,
+                "name": "expiration",
+                "nodeType": "VariableDeclaration",
+                "scope": 1770,
+                "src": "2618:18:5",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 1766,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "2618:7:5",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 1769,
+                "name": "issuedBlock",
+                "nodeType": "VariableDeclaration",
+                "scope": 1770,
+                "src": "2701:19:5",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 1768,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "2701:7:5",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              }
+            ],
+            "name": "License",
+            "nodeType": "StructDefinition",
+            "scope": 1796,
+            "src": "2391:336:5",
+            "visibility": "public"
+          },
+          {
+            "canonicalName": "LicenseStorage.MainStorage",
+            "id": 1795,
+            "members": [
+              {
+                "constant": false,
+                "id": 1772,
+                "name": "_vendorCount",
+                "nodeType": "VariableDeclaration",
+                "scope": 1795,
+                "src": "3087:20:5",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 1771,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "3087:7:5",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 1774,
+                "name": "_productCount",
+                "nodeType": "VariableDeclaration",
+                "scope": 1795,
+                "src": "3147:21:5",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 1773,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "3147:7:5",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 1776,
+                "name": "_licenseCount",
+                "nodeType": "VariableDeclaration",
+                "scope": 1795,
+                "src": "3208:21:5",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 1775,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "3208:7:5",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 1778,
+                "name": "proxied",
+                "nodeType": "VariableDeclaration",
+                "scope": 1795,
+                "src": "3306:12:5",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_bool",
+                  "typeString": "bool"
+                },
+                "typeName": {
+                  "id": 1777,
+                  "name": "bool",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "3306:4:5",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 1782,
+                "name": "vendors",
+                "nodeType": "VariableDeclaration",
+                "scope": 1795,
+                "src": "3353:32:5",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Vendor_$1728_storage_$",
+                  "typeString": "mapping(uint256 => struct LicenseStorage.Vendor)"
+                },
+                "typeName": {
+                  "id": 1781,
+                  "keyType": {
+                    "id": 1779,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "3361:7:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "nodeType": "Mapping",
+                  "src": "3353:24:5",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Vendor_$1728_storage_$",
+                    "typeString": "mapping(uint256 => struct LicenseStorage.Vendor)"
+                  },
+                  "valueType": {
+                    "contractScope": null,
+                    "id": 1780,
+                    "name": "Vendor",
+                    "nodeType": "UserDefinedTypeName",
+                    "referencedDeclaration": 1728,
+                    "src": "3370:6:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_struct$_Vendor_$1728_storage_ptr",
+                      "typeString": "struct LicenseStorage.Vendor"
+                    }
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 1786,
+                "name": "vendorIDsByAddress",
+                "nodeType": "VariableDeclaration",
+                "scope": 1795,
+                "src": "3467:46:5",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
+                  "typeString": "mapping(address => uint256)"
+                },
+                "typeName": {
+                  "id": 1785,
+                  "keyType": {
+                    "id": 1783,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "3475:7:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "nodeType": "Mapping",
+                  "src": "3467:27:5",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
+                    "typeString": "mapping(address => uint256)"
+                  },
+                  "valueType": {
+                    "id": 1784,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "3486:7:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 1790,
+                "name": "licenses",
+                "nodeType": "VariableDeclaration",
+                "scope": 1795,
+                "src": "3549:34:5",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_License_$1770_storage_$",
+                  "typeString": "mapping(uint256 => struct LicenseStorage.License)"
+                },
+                "typeName": {
+                  "id": 1789,
+                  "keyType": {
+                    "id": 1787,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "3557:7:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "nodeType": "Mapping",
+                  "src": "3549:25:5",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_License_$1770_storage_$",
+                    "typeString": "mapping(uint256 => struct LicenseStorage.License)"
+                  },
+                  "valueType": {
+                    "contractScope": null,
+                    "id": 1788,
+                    "name": "License",
+                    "nodeType": "UserDefinedTypeName",
+                    "referencedDeclaration": 1770,
+                    "src": "3566:7:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_struct$_License_$1770_storage_ptr",
+                      "typeString": "struct LicenseStorage.License"
+                    }
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 1794,
+                "name": "products",
+                "nodeType": "VariableDeclaration",
+                "scope": 1795,
+                "src": "3619:36:5",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Product_$1741_storage_$",
+                  "typeString": "mapping(uint256 => struct LicenseStorage.Product)"
+                },
+                "typeName": {
+                  "id": 1793,
+                  "keyType": {
+                    "id": 1791,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "3627:7:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "nodeType": "Mapping",
+                  "src": "3619:27:5",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Product_$1741_storage_$",
+                    "typeString": "mapping(uint256 => struct LicenseStorage.Product)"
+                  },
+                  "valueType": {
+                    "contractScope": null,
+                    "id": 1792,
+                    "name": "Product",
+                    "nodeType": "UserDefinedTypeName",
+                    "referencedDeclaration": 1741,
+                    "src": "3638:7:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_struct$_Product_$1741_storage_ptr",
+                      "typeString": "struct LicenseStorage.Product"
+                    }
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              }
+            ],
+            "name": "MainStorage",
+            "nodeType": "StructDefinition",
+            "scope": 1796,
+            "src": "3029:642:5",
+            "visibility": "public"
+          }
+        ],
+        "scope": 1797,
+        "src": "141:3537:5"
+      }
+    ],
+    "src": "0:3678:5"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.5.8+commit.23d335f2.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.0.11",
+  "updatedAt": "2019-08-13T18:20:45.813Z",
+  "devdoc": {
+    "details": "Contains all the storage members for the Licensing logic contracts",
+    "methods": {},
+    "title": "LicenseStorage"
+  },
+  "userdoc": {
+    "methods": {}
+  }
+}
