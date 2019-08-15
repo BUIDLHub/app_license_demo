@@ -1,0 +1,18 @@
+@import "../../../GlobalStyles/global.scss";
+
+.step_name {
+  color: $blue;
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+  text-align: center;
+  text-transform: uppercase;
+  @include xs() {
+    font-size: 0.65rem;
+    // margin: auto;
+    padding-top: 0.5rem;
+  }
+}
+
+.step_item {
+  padding-right: 1.5rem;
+}
