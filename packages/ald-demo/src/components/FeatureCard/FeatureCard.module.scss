@@ -1,15 +1,17 @@
 .root {
     cursor: pointer;
 
-    .locked {
-        text-align: center;
-        background-color: #edededff;
-        transition: box-shadow 0.1s ease-in-out;
+    
+}
 
-        &:hover {
-            box-shadow: 0px 0px 10px 0px rgba(107,167,227,.5);
-            // border-color: rgba(107,167,227,.5);
-        }
+.locked {
+    text-align: center;
+    background-color: #edededff;
+    transition: box-shadow 0.1s ease-in-out;
 
+    &:hover {
+        box-shadow: 0px 0px 10px 0px rgba(107,167,227,.5);
+        // border-color: rgba(107,167,227,.5);
     }
+
 }
