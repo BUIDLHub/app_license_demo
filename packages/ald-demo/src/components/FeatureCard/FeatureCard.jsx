@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styles from './FeatureCard.module.scss';
 import { Card, CardTitle, CardText, CardBody } from 'reactstrap';
 import { MdLock } from 'react-icons/md';
+import cx from 'classnames';
 
 class FeatureCard extends React.Component {
 
@@ -12,21 +13,25 @@ class FeatureCard extends React.Component {
   static propTypes = {};
 
   render() {
-
     const {locked} = this.props;
+
+    const cardClasses = [styles.root];
+    if (locked) {
+      cardClasses.push(styles.locked);
+    } else {
+      cardClasses.push(styles.card);
+    }
 
     const body = locked ?
       this._renderLock() :
       this._renderBody();
 
     return (
-      <div className={styles.root}>
-        <Card className={locked ? styles.locked : styles.card}>
-          <CardBody>
-            {body}
-          </CardBody>
-        </Card>
-      </div>
+      <Card className={cx(cardClasses)} top width="100%" >
+        <CardBody>
+          {body}
+        </CardBody>
+      </Card>
     );
     }
     _renderBody = () => {
@@ -49,7 +54,7 @@ class FeatureCard extends React.Component {
     _renderLock = () => {
       return (
         <React.Fragment>
-          <MdLock color="#d9d9d9ff" size="6em" />
+          <MdLock color="#d9d9d9ff" size="6em" className="mt-4"/>
         </React.Fragment>
       )
     }

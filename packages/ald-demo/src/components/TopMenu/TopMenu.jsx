@@ -42,7 +42,7 @@ class TopMenu extends React.Component {
     return (
       <div className={styles.root}> 
       <Navbar color="light" light expand="md">
-        <NavbarBrand href="/" className={styles.appName}>
+          <NavbarBrand href="/" className={styles.appName}>
           <span className={styles.logo}>
             <MdFlare />
           </span>
