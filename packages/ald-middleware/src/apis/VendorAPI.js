@@ -1,4 +1,4 @@
-import {Logger} from 'ald-utils';
+import {Logger} from 'buidl-utils';
 import API from './BaseAPI';
 import Factory from '../model/ModelFactory';
 import * as DBNames from '../DBNames';
@@ -97,9 +97,21 @@ export default class VendorAPI extends API {
             });
             let events = txn.events || {};
             
-            let v = Factory.parseModels(txn);
-            if(v) {
-                return callback(null, v);
+            let res = Factory.parseModels(txn);
+            if(res) {
+                if(res.length > 0) {
+                    for(let i=0;i<res.length;++i) {
+                        let v = res[i];
+                        if(v.vendorID) {
+                            await this.db.create({
+                                database: DBNames.Vendor,
+                                key: v.vendorID,
+                                data: v
+                            })
+                        }
+                    }
+                }
+                return callback(null, res);
             } else {
                 log.error("Txn did not contain vendor event", txn);
                 return callback(new Error("Could not extract vendor event from txn"));

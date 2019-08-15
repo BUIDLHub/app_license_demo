@@ -1,4 +1,4 @@
-import {Logger} from 'ald-utils';
+import {Logger} from 'buidl-utils';
 import API from './BaseAPI';
 import Factory from '../model/ModelFactory';
 import * as DBNames from '../DBNames';
@@ -74,9 +74,21 @@ export default class SpecsAPI extends API {
                 from: this.account
             });
             
-            let v = Factory.parseModels(txn);
-            if(v) {
-                return callback(null, v);
+            let res = Factory.parseModels(txn);
+            if(res) {
+                if(res.length > 0) {
+                    for(let i=0;i<res.length;++i) {
+                        let s = res[i];
+                        if(s.specID) {
+                            await this.db.create({
+                                database: DBNames.Specs,
+                                key: s.productID + "_" + s.specID,
+                                data: s
+                            });
+                        }
+                    }
+                }
+                return callback(null, res);
             } else {
                 log.error("Txn did not contain specs event", txn);
                 return callback(new Error("Could not extract specs event from txn"));

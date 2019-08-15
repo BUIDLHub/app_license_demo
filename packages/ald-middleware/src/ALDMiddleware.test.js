@@ -1,7 +1,7 @@
 import ALDMiddleware from './';
 import TestSeed from './TestSeed.json';
 import * as DBNames from './DBNames';
-import DB from 'ald-db';
+import DB from 'buidl-storage';
 import _ from 'lodash';
 
 const defaultCfg = {

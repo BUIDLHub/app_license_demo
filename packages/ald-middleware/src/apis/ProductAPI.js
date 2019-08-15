@@ -1,4 +1,4 @@
-import {Logger} from 'ald-utils';
+import {Logger} from 'buidl-utils';
 import API from './BaseAPI';
 import Factory from '../model/ModelFactory';
 import * as DBNames from '../DBNames';
@@ -17,9 +17,14 @@ export default class ProductAPI extends API {
         [
            'getProducts',
            'getProductInfo',
-            'registerProduct'
+            'registerProduct',
+            'init'
         ].forEach(fn=>this[fn]=this[fn].bind(this));
         inst = this;
+    }
+
+    async init() {
+        
     }
 
     async getProducts(start, limit, refresh) {
@@ -28,15 +33,20 @@ export default class ProductAPI extends API {
             if(!info) {
                 throw new Error("Not registered as a vendor");
             }
-
+            
             if(!refresh) {
-                let r = await this.db.readAll({
+                let r = [];
+                await this.db.iterate({
                     database: DBNames.Product,
-                    filterFn: (v, k, itNum) => {
-                        return v.vendorID === info.vendorID;
+                    callback: (dbVal, dbKey, itNum) =>{
+                        if(itNum >= start && r.length < limit) {
+                            if(dbVal.vendorID === info.vendorID) {
+                                r.push(dbVal);
+                            }
+                        }
                     }
                 });
-                if(r) {
+                if(r.length > 0) {
                     return r;
                 }
             }
@@ -113,14 +123,24 @@ export default class ProductAPI extends API {
             let txn = await this.contract.methods.registerProduct(name).send({
                 from: this.account
             });
-            let events = txn.events || {};
-            let v = Factory.parseModels(txn, {
+            let res = Factory.parseModels(txn, {
                 vendorID: info.vendorID,
                 specCount: 0,
                 licenseCount: 0
             });
-            if(v) {
-                return callback(null, v);
+            
+            if(res) {
+                for(let i=0;i<res.length;++i) {
+                    let p = res[i];
+                    if(p.productID) {
+                        await this.db.create({
+                            database: DBNames.Product,
+                            key: p.productID,
+                            data: p
+                        });
+                    }
+                }
+                return callback(null, res);
             } else {
                 log.error("Txn did not contain vendor event", txn);
                 return callback(new Error("Could not extract vendor event from txn"));
