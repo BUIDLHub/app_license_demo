@@ -89,8 +89,6 @@ export const registerDeps = (deps, callback) => {
 }
 
 export default () =>  ({dispatch, getState}) => next => action => {
-
-    console.log("NEXT ACTION", action);
     
     //apply the action
     let retValue = next(action);
