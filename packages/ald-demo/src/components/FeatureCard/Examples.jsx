@@ -1,9 +1,6 @@
 import ContentLoader from "react-content-loader"
 import React from 'react';
-import {
-    Card, Button, CardImg, CardTitle, CardText, CardGroup,
-    CardSubtitle, CardBody, CardColumns
-} from 'reactstrap';
+import { Card, CardBody, CardColumns } from 'reactstrap';
 
 const Example1 = () => (
     <ContentLoader
@@ -32,6 +29,13 @@ const Example2 = () => (
         <rect x="89" y="60" rx="3" ry="3" width="22" height="85" />
         <rect x="129" y="97" rx="3" ry="3" width="22" height="50" />
         <rect x="169" y="84" rx="3" ry="3" width="22" height="62" />
+
+        <rect x="200" y="100" rx="3" ry="3" width="22" height="46" />
+        <rect x="230" y="83" rx="3" ry="3" width="22" height="63" />
+        <rect x="260" y="60" rx="3" ry="3" width="22" height="85" />
+        <rect x="290" y="97" rx="3" ry="3" width="22" height="50" />
+        <rect x="320" y="84" rx="3" ry="3" width="22" height="62" />
+        
     </ContentLoader>
 );
 

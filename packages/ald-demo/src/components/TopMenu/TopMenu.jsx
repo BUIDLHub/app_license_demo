@@ -8,13 +8,10 @@ import {
   Nav,
   NavItem,
   NavLink,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem } from 'reactstrap';
+  } from 'reactstrap';
 import styles from './TopMenu.module.scss';
 import {MdFlare} from 'react-icons/md';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import cx from 'classnames';
 
 class TopMenu extends React.Component {
