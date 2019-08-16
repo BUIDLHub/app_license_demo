@@ -1,9 +1,6 @@
 import ContentLoader from "react-content-loader"
 import React from 'react';
-import {
-    Card, Button, CardImg, CardTitle, CardText, CardGroup,
-    CardSubtitle, CardBody, CardColumns
-} from 'reactstrap';
+import { Card, CardBody, CardColumns } from 'reactstrap';
 
 const Example1 = () => (
     <ContentLoader

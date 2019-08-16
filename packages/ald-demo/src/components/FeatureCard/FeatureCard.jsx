@@ -1,7 +1,7 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import styles from './FeatureCard.module.scss';
-import { Card, CardTitle, CardText, CardBody } from 'reactstrap';
+import { Card, CardTitle, CardBody } from 'reactstrap';
 import { MdLock } from 'react-icons/md';
 import cx from 'classnames';
 
@@ -13,9 +13,9 @@ class FeatureCard extends React.Component {
   static propTypes = {};
 
   render() {
-    const {locked} = this.props;
+    const {onClick, locked} = this.props;
 
-    const cardClasses = [styles.root];
+    const cardClasses = [styles.root, 'shadow-sm'];
     if (locked) {
       cardClasses.push(styles.locked);
     } else {
@@ -27,7 +27,7 @@ class FeatureCard extends React.Component {
       this._renderBody();
 
     return (
-      <Card className={cx(cardClasses)} top width="100%" >
+      <Card className={cx(cardClasses)} top width="100%" onClick={onClick} >
         <CardBody>
           {body}
         </CardBody>

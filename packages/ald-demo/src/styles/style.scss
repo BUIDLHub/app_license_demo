@@ -1,3 +1,9 @@
 @import "variables";
 
 @import "node_modules/bootstrap/scss/bootstrap";
+
+body {
+    background-color: #ffffff;
+    background-image: -webkit-linear-gradient(285deg, #f3f3f3 50%, #ffffff 50%);
+    min-height: 300px;
+}
