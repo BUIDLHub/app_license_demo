@@ -7,7 +7,7 @@ import * as yup from 'yup';
 
 const schema = yup.object({
     contractAddress: yup.string().required("Missing contractAddress for middleware"),
-    web3: yup.object(),
+    web3: yup.object().required("API missing web3"),
     storage: yup.object()
 });
 

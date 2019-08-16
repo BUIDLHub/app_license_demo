@@ -4,18 +4,31 @@
   "private": true,
   "dependencies": {
     "@babel/runtime": "^7.5.0",
+    "ald-middleware": "^0.1.0",
     "bootstrap": "^4.3.1",
+    "buidl-storage": "^0.1.0",
     "classnames": "^2.2.6",
+    "cross-env": "^5.2.0",
+    "eth-history": "^0.1.0",
+    "eth-pipeline": "^0.1.5",
     "node-sass": "^4.12.0",
     "react": "^16.9.0",
     "react-bootstrap": "^1.0.0-beta.11",
     "react-dom": "^16.9.0",
+    "react-redux": "^7.1.0",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.1.1",
-    "reactstrap": "^8.0.1"
+    "reactstrap": "^8.0.1",
+    "redux": "^4.0.4",
+    "redux-thunk": "^2.3.0",
+    "reduxsauce": "^1.1.0",
+    "web3": "^1.2.1"
+  },
+  "devDependencies": {
+    "redux-logger": "^3.0.6"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "cross-env NODE_PATH=src SASS_PATH=node_modules:src/scss react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

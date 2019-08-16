@@ -6,23 +6,29 @@ import Licensor from "./Components/Licensor/index.js";
 import Footer from "./Components/Footer";
 import Marketplace from "./Components/Marketplace";
 import Products from "./Components/Portfolio/Products";
+import {Provider} from 'react-redux';
+import configureStore from 'Store/configureStore';
+
+let store = configureStore();
 
 function App() {
   return (
-    <Router>
-      <div className="App">
-        <Navigation />
-        <header className="page">
-          {/* <Licensor /> */}
-          <Switch>
-            <Route path="/" exact component={Licensor} />
-            <Route path="/marketplace" component={Marketplace} />
-            <Route path="/products" component={Products} />
-          </Switch>
-        </header>
-        <Footer />
-      </div>
-    </Router>
+    <Provider store={store}>
+      <Router>
+        <div className="App">
+          <Navigation />
+          <header className="page">
+            {/* <Licensor /> */}
+            <Switch>
+              <Route path="/" exact component={Licensor} />
+              <Route path="/marketplace" component={Marketplace} />
+              <Route path="/products" component={Products} />
+            </Switch>
+          </header>
+          <Footer />
+        </div>
+      </Router>
+    </Provider>
   );
 }
 

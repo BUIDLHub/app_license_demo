@@ -19,7 +19,7 @@
   },
   "scripts": {
     "test": "mocha --require babel-core/register --require babel-polyfill $(find ./src -name *.test.js)",
-    "prepare": "babel ./src --out-dir ./dist --ignore '**/*.test.js'",
+    "prepare": "babel --copy-files ./src --out-dir ./dist --ignore '**/*.test.js' ",
     "build": "npm run prepare",
     "lerna-build": "lerna bootstrap --scope=ald-middleware"
   },
