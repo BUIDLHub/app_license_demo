@@ -20,8 +20,6 @@ export default class ALDMiddleware {
 
         [
             'init',
-            'newBlock',
-            'purgeBlock',
             '_setConsumerAccount', //for testing only
             '_addFunctions',
             '_initAPIs'
@@ -36,7 +34,7 @@ export default class ALDMiddleware {
             });
         }
 
-        let accts = await w.eth.getAccounts();
+        let accts = await this.web3.eth.getAccounts();
         let cfg = {
             web3: this.web3,
             db: this.db,
@@ -50,7 +48,7 @@ export default class ALDMiddleware {
         this.accounts = accts;
 
         this._addFunctions([this.vendor, this.product, this.specs, this.consumer]);
-        await this._initAPI([this.vendor, this.product, this.specs, this.consumer]);
+        await this._initAPIs([this.vendor, this.product, this.specs, this.consumer]);
     }
 
     _setConsumerAccount(account) {
@@ -68,7 +66,7 @@ export default class ALDMiddleware {
         })
     }
 
-    async initAPIs(apis) {
+    async _initAPIs(apis) {
         for(let i=0;i<apis.length;++i) {
             await apis[i].init()
         }

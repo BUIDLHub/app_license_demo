@@ -1,6 +1,7 @@
 import API from './ProductAPI';
 import VendorAPI from './VendorAPI';
 import Web3 from 'web3';
+import Web3HDWalletProvider from 'web3-hdwallet-provider';
 import TestSeed from '../TestSeed.json';
 import DB from 'buidl-storage';
 import * as DBNames from '../DBNames';

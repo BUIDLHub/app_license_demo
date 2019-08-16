@@ -1,7 +1,6 @@
 import API from './ConsumerAPI';
 import ProductAPI from './ProductAPI';
 import SpecsAPI from './SpecsAPI';
-
 import Web3 from 'web3';
 import Web3HDWalletProvider from 'web3-hdwallet-provider';
 import TestSeed from '../TestSeed.json';
