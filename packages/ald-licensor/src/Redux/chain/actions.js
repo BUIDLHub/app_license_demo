@@ -6,6 +6,7 @@ const {
   initStart: null,
   initSuccess: ['web3', 'accounts', 'network'],
   changeNetwork: ['network'],
+  updatePending: ['pending'],
   failure: ['error']
 }, {prefix: "chain."});
 

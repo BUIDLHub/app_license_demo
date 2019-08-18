@@ -5,16 +5,16 @@ import TestSeed from '../TestSeed.json';
 import DB from 'buidl-storage';
 import * as DBNames from '../DBNames';
 import _ from 'lodash';
-import { promisify } from 'util';
 
 describe("VendorAPI", ()=>{
     let web3 = null;
     let db = null;
     let accounts = [];
+    let hdWallet = null;
     beforeEach(async ()=>{
         let http = new Web3.providers.HttpProvider(process.env.WEB3_URL);
-        let provider = new Web3HDWalletProvider(TestSeed.seed, http, 0, 10);
-        web3 = new Web3(provider);      
+        hdWallet = new Web3HDWalletProvider(TestSeed.seed, http, 0, 10);
+        web3 = new Web3(hdWallet);      
         db = new DB({
             dbPrefix: "ald-"
         });
@@ -31,6 +31,7 @@ describe("VendorAPI", ()=>{
         })
         setTimeout(async ()=>{
             let isReg = await api.isVendor();
+            await hdWallet.engine.stop();
             if(!isReg) {
                 return done(new Error("Expected root account to be registered as vendor"));
             }
@@ -47,6 +48,7 @@ describe("VendorAPI", ()=>{
             account: accounts[1]
         });
         api.registerVendor("Test vendor", async (e,v)=>{
+            await hdWallet.engine.stop();
             if(e) {
                 return done(e);
             }

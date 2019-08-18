@@ -11,10 +11,11 @@ describe("ProductAPI", ()=>{
     let web3 = null;
     let db = null;
     let accounts = [];
+    let hdWallet = null;
     beforeEach(async ()=>{
         let http = new Web3.providers.HttpProvider(process.env.WEB3_URL);
-        let provider = new Web3HDWalletProvider(TestSeed.seed, http, 0, 10);
-        web3 = new Web3(provider);      
+        hdWallet = new Web3HDWalletProvider(TestSeed.seed, http, 0, 10);
+        web3 = new Web3(hdWallet);      
         db = new DB({
             dbPrefix: "ald-"
         });
@@ -26,7 +27,7 @@ describe("ProductAPI", ()=>{
 
     it("Should get product info for root vendor", done=>{
         let cfg = {
-            web3: w3,
+            web3,
             db,
             address: TestSeed.contract,
             account: accounts[0]
@@ -34,7 +35,8 @@ describe("ProductAPI", ()=>{
         new VendorAPI(cfg);
         let api = new API(cfg);
         api.getProducts(0, 50, true).then( async (prods)=>{
-                
+            await hdWallet.engine.stop();
+
             if(prods.length === 0) {
                 return done(new Error("Expected a root product from contract"));
             }
@@ -50,27 +52,31 @@ describe("ProductAPI", ()=>{
     });
 
     it("Should register product for vendor", done=>{
-       let api = new API({
+        let cfg = {
             web3,
             db,
             address: TestSeed.contract,
             account: accounts[0]
-        });
+        };
+        new VendorAPI(cfg);
+        let api = new API(cfg);
         api.registerProduct("TestProduct", async (e, res)=>{
+            
             if(e) {
-                await web3.stop();
-                await router.close();
+                await hdWallet.engine.stop();
                 return done(e);
             }
             console.log("Registration Results", res);
 
             api.getProducts(0, 50, true).then(async (prods)=>{
+                await hdWallet.engine.stop();
+
                 if(e) {
                     return done(e);
                 }
                 console.log("New prods", prods);
-                if(prods.length !==2) {
-                    return done(new Error("Expected 2 products for root vendor account"));
+                if(prods.length === 1) {
+                    return done(new Error("Expected more than 1 product for root vendor account"));
                 }
                 if(prods[1].vendorID !== 1) {
                     console.log("Invalid product", prods[1]);

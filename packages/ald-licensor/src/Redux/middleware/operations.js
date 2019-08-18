@@ -3,7 +3,8 @@ import {registerDeps} from 'Redux/DepMiddleware';
 import {Types as cacheTypes} from 'Redux/cache/actions';
 import Storage from 'buidl-storage';
 import * as ChainInfo from 'Constants/chain';
-import API from 'ald-middleware';
+import API from "Mock/MockMiddleware"; // 'ald-middleware';
+import {default as chainOps} from 'Redux/chain/operations';
 
 const init = () => async (dispatch, getState) => {
   dispatch(Creators.initStart());
@@ -38,6 +39,43 @@ const init = () => async (dispatch, getState) => {
   }
 }
 
+const send = ({fName, args}) => async (dispatch, getState) => {
+  let api = getState().middleware.api;
+  let fn = api[fName];
+  if(typeof fn !== 'function') {
+    throw new Error("No such API method: " + fName);
+  }
+  let p = fn(...args);
+  let hash = null;
+  console.log("Registered for callbacks");
+  p.on("transactionHash", h=>{
+    hash = h;
+    console.log("Getting txn hash", h);
+    dispatch(chainOps.markPending(hash));
+  });
+  console.log("Setting up result handler");
+  p.then(r=>{
+    console.log("Result of", fName, r);
+    dispatch(chainOps.txnComplete(hash));
+    return r;
+  }).catch(e=>{
+    console.log("Problem with", fName, e);
+    dispatch(chainOps.txnComplete(hash));
+  })
+  return p;
+}
+
+const call = ({fName, ...args}) => async (dispatch, getState) => {
+  let api = getState().middlware.api;
+  let fn = api[fName];
+  if(typeof fn !== 'function') {
+    throw new Error("No such API method: " + fName);
+  }
+  return fn(...args);
+}
+
 export default {
-  init
+  init,
+  call,
+  send
 }

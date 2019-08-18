@@ -25,7 +25,7 @@ const success = (state=INIT, action) => {
   return {
     ...state,
     initComplete: true,
-    middleware: action.middleware,
+    api: action.middleware,
     isVendor: action.isVendor,
     loading: false
   }
@@ -41,7 +41,7 @@ const updateProducts = (state=INIT, action) => {
 const changed = (state=INIT, action) => {
   return {
     ...state,
-    middleware: action.middleware
+    api: action.middleware
   }
 }
 

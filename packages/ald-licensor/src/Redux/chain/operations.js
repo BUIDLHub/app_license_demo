@@ -1,6 +1,8 @@
 import {Creators} from './actions';
 import {registerDeps} from 'Redux/DepMiddleware';
 import Web3 from 'web3';
+import { toast,Flip } from 'react-toastify';
+
 
 const init = () => async (dispatch, getState) => {
   dispatch(Creators.initStart());
@@ -33,6 +35,43 @@ const init = () => async (dispatch, getState) => {
   }
 }
 
+
+const markPending = (hash) => (dispatch, getState) => {
+  let pending = {
+    ...getState().chain.pendingTxns
+  };
+  pending[hash] = showPending(hash);
+  dispatch(Creators.updatePending(pending));
+}
+
+const txnComplete = (hash) => (dispatch, getState) => {
+  let pending = {
+    ...getState().chain.pendingTxns
+  };
+  let id = pending[hash];
+  delete pending[hash];
+  //toast.dismiss(id);
+  toast.update(id, {
+    render: "Txn " + hash.substr(0, 10) + "... completed!",
+    type: toast.TYPE.SUCCESS,
+    autoClose: 5000,
+    transition: Flip
+  });
+  dispatch(Creators.updatePending(pending));
+}
+
+const showPending = (hash) => {
+  return toast("Waiting for txn " + hash.substr(0, 10) + "...", {
+    autoClose: 15000,
+    type: toast.TYPE.INFO,
+    closeButton: false,
+    newestOnTop: true
+  })
+}
+
+ 
 export default {
-  init
+  init,
+  markPending,
+  txnComplete
 }

@@ -17,6 +17,7 @@ const start = (state=INIT) => {
     loading: true,
     initStarted: true,
     initComplete: false,
+    pendingTxns: {},
     error: null
   }
 }
@@ -48,11 +49,19 @@ const fail = (state=INIT, action) => {
   }
 }
 
+const updatePending = (state=INIT, action) => {
+  return {
+    ...state,
+    pendingTxns: action.pending
+  }
+}
+
 const HANDLERS = {
   [Types.INIT_START]: start,
   [Types.INIT_SUCCESS]: success,
   [Types.FAILURE]: fail,
-  [Types.CHANGE_NETWORK]: changeNetwork
+  [Types.CHANGE_NETWORK]: changeNetwork,
+  [Types.UPDATE_PENDING]: updatePending
 }
 
 export default createReducer(INIT, HANDLERS);

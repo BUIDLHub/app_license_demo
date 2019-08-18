@@ -6,7 +6,7 @@ import FormCard from "./LicensorFormCard.js";
 export class CreateProduct extends Component {
   continue = e => {
     e.preventDefault();
-    this.props.nextStep();
+    this.props.submit();
   };
 
   back = e => {

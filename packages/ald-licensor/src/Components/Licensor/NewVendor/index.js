@@ -20,6 +20,9 @@ const d2p = dispatch => {
         },
         prevStep: () => {
             dispatch(formOps.prev());
+        },
+        submit: () => {
+            dispatch(formOps.submit());
         }
     }
 }

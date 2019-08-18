@@ -10,6 +10,7 @@ import {Provider} from 'react-redux';
 import configureStore from 'Store/configureStore';
 import {default as initOps} from 'Redux/init/operations';
 import {connect} from 'react-redux';
+import { ToastContainer } from 'react-toastify';
 
 class Main extends React.Component {
   componentDidMount() {
@@ -23,6 +24,7 @@ class Main extends React.Component {
       <Router>
           <div className="App">
             <Navigation />
+            <ToastContainer />
             <header className="page">
               {/* <Licensor /> */}
               <Switch>

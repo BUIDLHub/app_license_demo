@@ -90,6 +90,7 @@ export default class Wizard extends Component {
             nextStep={this.nextStep}
             prevStep={this.prevStep}
             handleChange={this.handleChange}
+            submit={this.props.submit}
             values={values}
           />
         );
