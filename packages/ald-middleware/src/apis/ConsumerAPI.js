@@ -19,7 +19,7 @@ export default class ConsumerAPI extends API {
         ].forEach(fn=>this[fn]=this[fn].bind(this));
     }
 
-    async getLicenseInfo(prodId, specId, refresh) {
+    getLicenseInfo(prodId, specId, refresh) {
         return this.promEvent()(async defer=>{
             if(!refresh) {
                 let r = await this.db.read({
@@ -48,7 +48,7 @@ export default class ConsumerAPI extends API {
         });
     }
 
-    async getLicenses(prodId, refresh) {
+    getLicenses(prodId, refresh) {
         return this.promEvent()(async defer=>{
             if(!refresh) {
                 let r = await this.db.readAll({
@@ -76,7 +76,7 @@ export default class ConsumerAPI extends API {
         
     }
 
-    async buyLicense(prodId, specId, callback) {
+    buyLicense(prodId, specId, callback) {
         return this.promEvent()(async defer=>{
             try {
                 let specs = await Specs.instance.getLicenseSpecs(prodId, specId);
@@ -119,7 +119,7 @@ export default class ConsumerAPI extends API {
         
     }
 
-    async checkLicense(prodId, specId) {
+    checkLicense(prodId, specId) {
         return this.promEvent()(async defer=>{
             return this.contract.methods.userHasValidLicense(this.account, prodId, specId).call({
                 from: this.account
@@ -127,7 +127,7 @@ export default class ConsumerAPI extends API {
         });
     }
 
-    async verifyLicenseOwnership(prodId, specId, callback) {
+    verifyLicenseOwnership(prodId, specId, callback) {
         return this.promEvent()(async defer=>{
             try {
                 let lic = await this.getLicenseInfo(prodId, specId);

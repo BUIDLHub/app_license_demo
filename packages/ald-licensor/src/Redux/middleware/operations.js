@@ -3,7 +3,7 @@ import {registerDeps} from 'Redux/DepMiddleware';
 import {Types as cacheTypes} from 'Redux/cache/actions';
 import Storage from 'buidl-storage';
 import * as ChainInfo from 'Constants/chain';
-import API from "Mock/MockMiddleware"; // 'ald-middleware';
+import API from 'Mock/MockMiddleware'; //from 'ald-middleware';
 import {default as chainOps} from 'Redux/chain/operations';
 
 const init = () => async (dispatch, getState) => {
@@ -30,8 +30,17 @@ const init = () => async (dispatch, getState) => {
       storage,
       contractAddress: ChainInfo.contractAddress
     });
+    console.log("Initializing middleware");
     await mw.init();
-    let isV = await mw.isVendor();
+    let isV = false;
+    try {
+      console.log("Calling isVendor");
+      isV = await mw.isVendor();
+      console.log("isV result", isV);
+    } catch (e) {
+      console.log("Problem getting vendor info", e);
+    }
+    
     dispatch(Creators.initSuccess(mw, isV));
 
   }catch(e){
@@ -47,7 +56,7 @@ const send = ({fName, args}) => async (dispatch, getState) => {
   }
   let p = fn(...args);
   let hash = null;
-  console.log("Registered for callbacks");
+  console.log("Registered for callbacks", p);
   p.on("transactionHash", h=>{
     hash = h;
     console.log("Getting txn hash", h);
@@ -60,7 +69,7 @@ const send = ({fName, args}) => async (dispatch, getState) => {
     return r;
   }).catch(e=>{
     console.log("Problem with", fName, e);
-    dispatch(chainOps.txnComplete(hash));
+    dispatch(chainOps.txnFailed(hash, e.message));
   })
   return p;
 }

@@ -27,7 +27,7 @@ export default class ProductAPI extends API {
         
     }
 
-    async getProducts(start, limit, refresh) {
+    getProducts(start, limit, refresh) {
         return this.promEvent()(async defer=>{
             try {
                 let info = await VendorAPI.instance.getVendorInfo(true);
@@ -89,7 +89,7 @@ export default class ProductAPI extends API {
         
     }
 
-    async getProductInfo(prodId, refresh) {
+    getProductInfo(prodId, refresh) {
         return this.promEvent()(async defer=>{
             let prod = null;
             if(!refresh) {
@@ -123,7 +123,7 @@ export default class ProductAPI extends API {
         
     }
 
-    async registerProduct(name, callback) {
+    registerProduct(name, callback) {
         return this.promEvent()(async defer=>{
             try {
                 let info = await VendorAPI.instance.getVendorInfo();

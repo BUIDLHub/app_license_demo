@@ -21,7 +21,7 @@ export default class SpecsAPI extends API {
         inst = this;
     }
     
-    async getAllLicenseSpecsForProduct(prodId, refresh) {
+    getAllLicenseSpecsForProduct(prodId, refresh) {
         return this.promEvent()(async defer=>{
             let prod = await ProductAPI.instance.getProductInfo(prodId, refresh);
         
@@ -38,7 +38,7 @@ export default class SpecsAPI extends API {
         });
     }
 
-    async getLicenseSpecs(prodId, specId) {
+    getLicenseSpecs(prodId, specId) {
         return this.promEvent()(async defer=>{
             let r = await this.db.read({
                 database: DBNames.Specs,
@@ -72,7 +72,7 @@ export default class SpecsAPI extends API {
     }
 
     //_productID, _attributes,_name,_price,_duration
-    async registerLicenseSpecs(prodId, name, price, duration, callback) {
+    registerLicenseSpecs(prodId, name, price, duration, callback) {
         return this.promEvent()(async defer=>{
             try {
                 //TODO: Eventually, attributes will have something meaningful.

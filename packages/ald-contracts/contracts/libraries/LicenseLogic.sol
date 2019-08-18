@@ -49,7 +49,10 @@ library LicenseLogic {
     function vendorInfo(LicenseStorage.MainStorage storage main, address _vendor)
             internal view returns(uint256, uint256, string memory) {
        uint256 vid = main.vendorIDsByAddress[_vendor];
-       require(vid > 0, "Vendor Not Registered ");
+       //require(vid > 0, "Vendor Not Registered ");
+       if(vid == 0) {
+           return (0, 0, "");
+       }
        LicenseStorage.Vendor storage v = main.vendors[vid];
        return (vid, v.productIDs.length, v.name);
     }

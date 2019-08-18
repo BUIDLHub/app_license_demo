@@ -22,7 +22,7 @@ export default class VendorAPI extends API {
         inst = this;
     }
 
-    async isVendor() {
+    isVendor() {
         return this.promEvent()(async defer=>{
             //first check DB
             let r = await this.db.readAll({
@@ -49,7 +49,7 @@ export default class VendorAPI extends API {
         });
     }
 
-    async getVendorInfo(refresh) {
+    getVendorInfo(refresh) {
 
         return this.promEvent()(async defer=>{
             //first see if in local DB
@@ -62,10 +62,13 @@ export default class VendorAPI extends API {
                     return r;
                 }
             }
-
+            
             let info = await this.contract.methods.vendorInfo(this.account).call({
-                from: this.account
+                from: this.account,
+                gasLimit: 100000
             });
+            console.log("Result", info);
+
             if(info[0].toString() === "0") {
                 return null;
             }
@@ -89,8 +92,9 @@ export default class VendorAPI extends API {
         
     }
 
-    async registerVendor(name, callback) {
+    registerVendor(name, callback) {
         return this.promEvent()(async pEvt=>{
+            console.log("PromEvent", pEvt);
             try {
                 //first see if in local DB
                 let r = await this.db.read({
@@ -143,7 +147,7 @@ export default class VendorAPI extends API {
         
     }
 
-    async withdrawFunds(callback) {
+    withdrawFunds(callback) {
         return this.promEvent()(async pEvt=>{
             try {
                 let p = await this.contract.methods.withdrawVendorBalance().send({

@@ -16,6 +16,7 @@ export default class API {
         this.account = props.account;
         this.db = props.db;
         this.emitter = props.emitter;
+        this.contractAddress = props.address;
 
         //ORDER is important here. The contract creation will populate the given ABIs with
         //function and event signatures. those are used in monitor's decoder to decode
@@ -60,6 +61,7 @@ export default class API {
                     return defer.reject(e);
                 }
             });
+            console.log("Defer.eventEmitter", defer.eventEmitter);
             return defer.eventEmitter;
         }
     }
