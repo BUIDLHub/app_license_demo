@@ -1,0 +1,102 @@
+@import "../../GlobalStyles/global.scss";
+
+.center {
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+}
+
+.card_spacing {
+  margin: 0rem;
+  @include xs() {
+    padding: 0.1rem;
+  }
+  @include md() {
+    padding: 0.25rem;
+  }
+}
+
+.card_body {
+  flex: 1 1 auto;
+
+  background-color: white;
+  transform: scale(1);
+  transition: background-color 0.3s ease-out, transform 0.3s ease-in;
+  @include xs() {
+    padding: 1.25rem;
+  }
+}
+
+.card_div {
+  margin: auto;
+  padding: auto;
+}
+
+.card_h {
+  color: $black;
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+  @include xs() {
+    font-size: 0.95rem;
+    line-height: 0.95rem;
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+    padding-bottom: 0.25rem;
+  }
+  @include sm() {
+    font-weight: 700;
+    font-size: 1.15rem;
+    line-height: 1.25rem;
+  }
+  @include md() {
+    font-size: 1.35rem;
+    line-height: 1.5rem;
+  }
+  margin-bottom: 0;
+  transition: color 0.3s ease-out;
+}
+
+.card_subh {
+  color: $gray-800;
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  @include xs() {
+    font-size: 0.8rem;
+    line-height: 0.85rem;
+    padding-left: 0.25rem;
+  }
+  @include sm() {
+    font-size: 0.85rem;
+    line-height: 0.9rem;
+  }
+  @include lg() {
+    font-size: 1.05rem;
+  }
+  margin-bottom: 0;
+}
+
+hr {
+  margin: 0.25rem auto;
+  // padding: 0.25rem;
+  width: 75%;
+}
+
+.card_p {
+  color: $black;
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+  @include xs() {
+    font-size: 0.8rem;
+    line-height: 0.85rem;
+    padding: 0.25rem;
+  }
+  @include sm() {
+    font-size: 0.85rem;
+    line-height: 0.9rem;
+  }
+  @include lg() {
+    font-size: 1rem;
+    line-height: 1.05rem;
+  }
+  transition: color 0.3s ease-out;
+}

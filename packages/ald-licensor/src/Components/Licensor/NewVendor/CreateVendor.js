@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import classNames from "classnames";
-import styles from "./LicensorForm.module.scss";
-import FormCard from "./LicensorFormCard.js";
+import styles from "./NewVendor.module.scss";
+import FormCard from "./Card";
 
-export class RegisterVendor extends Component {
+export class CreateVendor extends Component {
   continue = e => {
     console.log("Ayo I was clicked man");
     e.preventDefault();
@@ -56,4 +56,4 @@ export class RegisterVendor extends Component {
   }
 }
 
-export default RegisterVendor;
+export default CreateVendor;

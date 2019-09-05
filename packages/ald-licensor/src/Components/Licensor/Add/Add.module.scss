@@ -1,0 +1,86 @@
+@import "../../GlobalStyles/global.scss";
+
+/* Form Input Styles */
+
+.center {
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+}
+
+.form_name {
+  font-family: "Roboto", sans-serif;
+  font-weight: 600;
+  text-align: left;
+  color: $black;
+  @include xs() {
+    // font-size: 0.65rem;
+    font-size: 0.9rem;
+  }
+  @include sm() {
+    font-size: 0.7rem;
+  }
+  @include md() {
+    font-size: 0.75rem;
+  }
+  @include lg() {
+    font-size: 0.9rem;
+  }
+}
+
+.form_label {
+  margin: auto;
+  -ms-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+  box-sizing: content-box;
+  padding-left: 0.25rem;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  border-radius: 0.25rem;
+  border: 0.5px solid $gray-300;
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+  color: #727289;
+  // background-color: rgba(255, 255, 255, 0);
+  background-color: $white;
+  @include md() {
+    font-size: 0.95rem;
+    min-width: 30vw;
+    margin-top: 0.5rem;
+  }
+  transition: background-color 0.3s ease-in-out;
+}
+
+.form_label:focus {
+  background-color: $gray-100;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.button_blue {
+  border: 2px solid $blue;
+  border-radius: 25px;
+  display: inline-block;
+  font-family: "Roboto", sans-serif;
+  color: $blue;
+  cursor: pointer;
+  box-shadow: inset 0 0 0 0 $blue;
+  -webkit-transition: ease-out 0.4s;
+  -moz-transition: ease-out 0.4s;
+  transition: ease-out 0.4s;
+  @include md() {
+    padding: 0.25rem 0.75rem;
+    font-size: 0.95rem;
+    margin: 0.5rem;
+  }
+}
+
+.button_blue:hover {
+  color: $white;
+  box-shadow: inset 400px 0 0 0 $blue;
+  transition: ease-out 0.4s;
+}
+
+.button_blue:active {
+  box-shadow: inset 400px 0 0 0 $gray-800;
+}

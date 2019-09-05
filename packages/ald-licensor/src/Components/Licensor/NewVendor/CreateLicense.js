@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import classNames from "classnames";
-import styles from "./LicensorForm.module.scss";
-import FormCard from "./LicensorFormCard.js";
+import styles from "./NewVendor.module.scss";
+import FormCard from "./Card";
 import { Input } from "reactstrap";
 
 export class CreateProductLicense extends Component {
@@ -20,15 +20,15 @@ export class CreateProductLicense extends Component {
     return (
       <FormCard
         header="Create a Product License"
-        subheader="The details to list your license to the market"
+        subheader="Enter the details for restricted access to a product"
       >
         <div className={classNames(["form-group"], ["my-0"])}>
           <label className={classNames([styles.form_name])}>
-            Product Name{" "}
+            License Name{" "}
             <div>
               <input
                 className={classNames([styles.form_label])}
-                placeholder="Sample License Name"
+                placeholder="Locked Feature Name"
                 type="text"
                 name="licenseName"
                 required

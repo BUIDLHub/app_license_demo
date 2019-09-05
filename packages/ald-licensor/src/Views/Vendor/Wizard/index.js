@@ -1,55 +1,35 @@
 import React, { Component } from "react";
-import RegisterVendor from "./RegisterVendor";
-import CreateProduct from "./CreateProduct";
-import CreateProductLicense from "./CreateProductLicense";
-import Confirm from "./Confirm";
-import Success from "./Success";
-import ProgressBar from "../ProgressBar";
+import CreateVendor from "../../../Components/Licensor/NewVendor/CreateVendor";
+import CreateProduct from "../../../Components/Licensor/NewVendor/CreateProduct";
+import CreateProductLicense from "../../../Components/Licensor/NewVendor/CreateLicense";
+import Confirm from "../../../Components/Licensor/NewVendor/Confirm";
+import Success from "../../../Components/Licensor/NewVendor/Success";
+import ProgressBar from "../../../Components/Licensor/NewVendor/ProgressBar";
 
 export default class Wizard extends Component {
-    /*
-  state = {
-    step: 1,
-    vendorName: "",
-    productName: "",
-    licenseName: "",
-    licenseDuration: "",
-    licensePrice: ""
-  };
-  */
-
-  //   Proceed to next step
   nextStep = () => {
-      this.props.nextStep();
-    //const { step } = this.state;
-    //this.setState({ step: step + 1 });
+    this.props.nextStep();
   };
-  // Go back to previous step
   prevStep = () => {
-      this.props.prevStep();
-    //const { step } = this.state;
-    //this.setState({ step: step - 1 });
+    this.props.prevStep();
   };
-
-  //   Handle fields change
   handleChange = input => e => {
-    //this.setState({ [input]: e.target.value });
     let newData = {
-        ...this.props.formData,
-        [input]: e.target.value
+      ...this.props.formData,
+      [input]: e.target.value
     };
     this.props.saveData(newData);
   };
 
   render() {
-    const { step } = this.props; //this.state;
+    const { step } = this.props;
     const {
       vendorName,
       productName,
       licenseName,
       licenseDuration,
       licensePrice
-    } = this.props.formData; //= this.state;
+    } = this.props.formData;
     const values = {
       vendorName,
       productName,
@@ -60,7 +40,7 @@ export default class Wizard extends Component {
     switch (step) {
       case 1:
         return (
-          <RegisterVendor
+          <CreateVendor
             nextStep={this.nextStep}
             handleChange={this.handleChange}
             values={values}

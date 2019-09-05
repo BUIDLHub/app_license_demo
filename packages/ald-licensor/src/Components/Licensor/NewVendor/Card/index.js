@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import classNames from "classnames";
 // import logo from "../../Images/ALD-logo-blueish.svg";
-
-import styles from "./LicensorForm.module.scss";
+import styles from "./Card.module.scss";
 
 const LicensorFormCard = props => {
   return (

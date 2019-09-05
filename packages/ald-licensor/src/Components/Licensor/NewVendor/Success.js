@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import classNames from "classnames";
-import styles from "./LicensorForm.module.scss";
-import FormCard from "./LicensorFormCard.js";
+import styles from "./NewVendor.module.scss";
+import FormCard from "./Card";
 
 export class CreateProduct extends Component {
   continue = e => {

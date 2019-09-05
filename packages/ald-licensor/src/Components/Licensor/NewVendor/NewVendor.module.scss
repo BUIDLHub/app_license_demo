@@ -1,5 +1,48 @@
 @import "../../GlobalStyles/global.scss";
 
+.loader {
+  // margin: auto !important;
+  // text-align: center !important;
+  padding-top: 3rem;
+  padding-left: 35%;
+}
+
+.loader_h {
+  margin: auto;
+  text-align: center;
+  color: $black;
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+  @include xs() {
+    font-size: 1.65rem;
+    line-height: 1.5rem;
+  }
+}
+
+.loader_p {
+  margin: auto;
+  text-align: center;
+  color: $black;
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+  @include xs() {
+    font-size: 0.8rem;
+    line-height: 0.85rem;
+    padding: 0.25rem;
+    margin-top: 0.5rem;
+  }
+  @include sm() {
+    font-size: 0.85rem;
+    line-height: 0.9rem;
+  }
+  @include lg() {
+    font-size: 1rem;
+    line-height: 1.05rem;
+  }
+}
+
+/* Card Styles */
+
 .page_h {
   color: $black;
   font-family: "Roboto", sans-serif;
@@ -26,7 +69,7 @@
   background-color: white;
   transform: scale(1);
   transition: background-color 0.3s ease-out, transform 0.3s ease-in;
-  @include md() {
+  @include xs() {
     padding: 1.25rem;
   }
 }
@@ -105,25 +148,6 @@ hr {
   transition: color 0.3s ease-out;
 }
 
-// .card_body:hover {
-//   //   background-color: $blue;
-//   //   transform: scale(1.04);
-//   //   .card_h {
-//   //     color: $white;
-//   //     transition: color 0.3s ease-out;
-//   //   }
-//   //   .card_p {
-//   //     color: $white;
-//   //     transition: color 0.3s ease-out;
-//   //   }
-//   //   .card_date {
-//   //     color: $gray-200;
-//   //     transition: color 0.3s ease-out;
-//   //   }
-
-//   //   transition: background-color 0.3s ease-in-out, transform 0.3s ease-out;
-// }
-
 .confirm_name {
   font-family: "Roboto", sans-serif;
   font-weight: 600;
@@ -181,6 +205,7 @@ hr {
 /* ############# */
 /* ############# */
 /* ############# */
+/* Form Input Styles */
 
 .center {
   justify-content: center;
@@ -264,3 +289,30 @@ hr {
 .button_blue:active {
   box-shadow: inset 400px 0 0 0 $gray-800;
 }
+
+/* ############# */
+/* ############# */
+/* ############# */
+/* ############# */
+/* ############# */
+/* ############# */
+/* Reserve Styles */
+
+// .card_body:hover {
+//   //   background-color: $blue;
+//   //   transform: scale(1.04);
+//   //   .card_h {
+//   //     color: $white;
+//   //     transition: color 0.3s ease-out;
+//   //   }
+//   //   .card_p {
+//   //     color: $white;
+//   //     transition: color 0.3s ease-out;
+//   //   }
+//   //   .card_date {
+//   //     color: $gray-200;
+//   //     transition: color 0.3s ease-out;
+//   //   }
+
+//   //   transition: background-color 0.3s ease-in-out, transform 0.3s ease-out;
+// }
