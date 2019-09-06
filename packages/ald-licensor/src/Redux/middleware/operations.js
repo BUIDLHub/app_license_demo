@@ -1,7 +1,6 @@
 import {Creators} from './actions';
 import {registerDeps} from 'Redux/DepMiddleware';
 import {Types as cacheTypes} from 'Redux/cache/actions';
-import Storage from 'buidl-storage';
 import * as ChainInfo from 'Constants/chain';
 import API from 'Mock/MockMiddleware'; //from 'ald-middleware';
 import {default as chainOps} from 'Redux/chain/operations';

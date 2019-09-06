@@ -1,4 +1,5 @@
-import * as DBNames from './DBNames';
+import * as DBNames from 'Redux/cache/DBNames';
+
 import {Logger, sleep} from 'buidl-utils';
 import  {
     Product
@@ -35,7 +36,7 @@ export default class MockProduct extends Base {
          
      }
 
-     async getProducts(start, limit, refresh) {
+     getProducts(start, limit, refresh) {
          return this.promEvent()(async defer=>{
             try {
                 let isV = await Vendor.instance.isVendor();
@@ -68,7 +69,7 @@ export default class MockProduct extends Base {
          
      }
  
-     async getProductInfo(prodId, refresh) {
+     getProductInfo(prodId, refresh) {
          return this.promEvent()(async defer=>{
             let prod = await this.db.read({
                 database: DBNames.Product,
@@ -78,9 +79,12 @@ export default class MockProduct extends Base {
          });
      }
  
-     async registerProduct(name, callback) {
+     registerProduct(name, callback) {
          return this.promEvent()(async defer=>{
             try {
+                //simulate a txn hash, etc.
+                this.sendTxnHash(defer);
+
                 let info = await Vendor.instance.getVendorInfo();
                  let p = new Product({
                      name: name,
@@ -97,11 +101,15 @@ export default class MockProduct extends Base {
                 ++this.productCounter;
                 await sleep(this.simulatedDelay);
                 defer.resolve([p]);
-                return callback(null, [p]);
+                if(typeof callback === 'function') {
+                    return callback(null, [p]);
+                }
              } catch (e) {
                  log.error("Problem registering product", e);
                  defer.reject(e);
-                 return callback(e);
+                 if(typeof callback === 'function') {
+                    return callback(e);
+                 }
              }
          });
          

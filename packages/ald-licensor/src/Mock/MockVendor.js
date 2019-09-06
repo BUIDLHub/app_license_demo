@@ -1,4 +1,4 @@
-import * as DBNames from './DBNames';
+import * as DBNames from 'Redux/cache/DBNames';
 import {Logger, sleep} from 'buidl-utils';
 import  {
     Vendor
@@ -38,7 +38,7 @@ export default class MockVendor extends Base {
         
     }
 
-    async isVendor() {
+    isVendor() {
         return this.promEvent()(async pEvt=>{
             let r = await  await this.db.readAll({
                 database: DBNames.Vendor, 
@@ -53,7 +53,7 @@ export default class MockVendor extends Base {
         });
     }
 
-    async getVendorInfo() {
+    getVendorInfo() {
         return this.promEvent()(async pEvt=>{
             let r = await  await this.db.readAll({
                 database: DBNames.Vendor, 
@@ -120,7 +120,7 @@ export default class MockVendor extends Base {
         
     }
 
-    async withdrawFunds(callback) {
+    withdrawFunds(callback) {
         return this.promEvent()(async defer=>{
             try {
                 defer.resolve([]);

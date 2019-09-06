@@ -1,0 +1,286 @@
+@import "../../../GlobalStyles/global.scss";
+
+.errorBox {
+  font-weight: 800;
+  font-size: 1.2em;
+  color: $danger;
+  margin-top: 3px;
+}
+
+/* Card Styles */
+
+.page_h {
+  color: $black;
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+  min-height: 200px;
+  min-width: 500px;
+  @include xs() {
+    font-size: 1.65rem;
+    line-height: 1.5rem;
+  }
+}
+
+.card_spacing {
+  margin: 0rem;
+  @include xs() {
+    padding: 0.1rem;
+  }
+  @include md() {
+    padding: 0.25rem;
+  }
+}
+
+.card_body {
+  flex: 1 1 auto;
+
+  background-color: white;
+  transform: scale(1);
+  transition: background-color 0.3s ease-out, transform 0.3s ease-in;
+  @include xs() {
+    padding: 1.25rem;
+  }
+}
+
+.card_div {
+  margin: auto;
+  padding: auto;
+}
+
+.card_h {
+  color: $black;
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+  @include xs() {
+    font-size: 0.95rem;
+    line-height: 0.95rem;
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+    padding-bottom: 0.25rem;
+  }
+  @include sm() {
+    font-weight: 700;
+    font-size: 1.15rem;
+    line-height: 1.25rem;
+  }
+  @include md() {
+    font-size: 1.35rem;
+    line-height: 1.5rem;
+  }
+  margin-bottom: 0;
+  transition: color 0.3s ease-out;
+}
+
+.card_subh {
+  color: $gray-800;
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  @include xs() {
+    font-size: 0.8rem;
+    line-height: 0.85rem;
+    padding-left: 0.25rem;
+  }
+  @include sm() {
+    font-size: 0.85rem;
+    line-height: 0.9rem;
+  }
+  @include lg() {
+    font-size: 1.05rem;
+  }
+  margin-bottom: 0;
+}
+
+hr {
+  margin: 0.25rem auto;
+  // padding: 0.25rem;
+  width: 75%;
+}
+
+.card_p {
+  color: $black;
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+  @include xs() {
+    font-size: 0.8rem;
+    line-height: 0.85rem;
+    padding: 0.25rem;
+  }
+  @include sm() {
+    font-size: 0.85rem;
+    line-height: 0.9rem;
+  }
+  @include lg() {
+    font-size: 1rem;
+    line-height: 1.05rem;
+  }
+  transition: color 0.3s ease-out;
+}
+
+.confirm_name {
+  font-family: "Roboto", sans-serif;
+  font-weight: 600;
+  text-align: left;
+  color: $gray-400;
+  margin-top: 0rem;
+  margin-bottom: 0rem;
+  @include xs() {
+    // font-size: 0.65rem;
+    font-size: 0.9rem;
+  }
+  @include sm() {
+    font-size: 0.7rem;
+  }
+  @include md() {
+    font-size: 0.75rem;
+  }
+  @include lg() {
+    font-size: 0.9rem;
+  }
+}
+
+.confirm_value {
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  color: $blue;
+  text-align: left;
+  margin-bottom: 0rem;
+  @include md() {
+    font-size: 1.05rem;
+  }
+}
+
+.success_area {
+  background-color: $gray-800;
+  min-height: 100%;
+  min-width: 45vw;
+}
+
+.success_code {
+  text-align: left;
+  margin-left: 0rem;
+  margin-right: auto;
+  font-family: "PT Mono", monospace;
+  color: lime;
+  @include xs() {
+    font-size: 0.85rem;
+    padding: 1rem;
+  }
+}
+
+/* ############# */
+/* ############# */
+/* ############# */
+/* ############# */
+/* ############# */
+/* ############# */
+/* Form Input Styles */
+
+.center {
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+}
+
+.form_name {
+  font-family: "Roboto", sans-serif;
+  font-weight: 600;
+  text-align: left;
+  color: $black;
+  @include xs() {
+    // font-size: 0.65rem;
+    font-size: 0.9rem;
+  }
+  @include sm() {
+    font-size: 0.7rem;
+  }
+  @include md() {
+    font-size: 0.75rem;
+  }
+  @include lg() {
+    font-size: 0.9rem;
+  }
+}
+
+.form_label {
+  margin: auto;
+  -ms-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+  box-sizing: content-box;
+  padding-left: 0.25rem;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  border-radius: 0.25rem;
+  border: 0.5px solid $gray-300;
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+  color: #727289;
+  // background-color: rgba(255, 255, 255, 0);
+  background-color: $white;
+  @include md() {
+    font-size: 0.95rem;
+    min-width: 30vw;
+    margin-top: 0.5rem;
+  }
+  transition: background-color 0.3s ease-in-out;
+}
+
+.form_label:focus {
+  background-color: $gray-100;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.button_blue {
+  border: 2px solid $blue;
+  border-radius: 25px;
+  display: inline-block;
+  font-family: "Roboto", sans-serif;
+  color: $blue;
+  cursor: pointer;
+  box-shadow: inset 0 0 0 0 $blue;
+  -webkit-transition: ease-out 0.4s;
+  -moz-transition: ease-out 0.4s;
+  transition: ease-out 0.4s;
+  @include md() {
+    padding: 0.25rem 0.75rem;
+    font-size: 0.95rem;
+    margin: 0.5rem;
+  }
+}
+
+.button_blue:hover {
+  color: $white;
+  box-shadow: inset 400px 0 0 0 $blue;
+  transition: ease-out 0.4s;
+}
+
+.button_blue:active {
+  box-shadow: inset 400px 0 0 0 $gray-800;
+}
+
+/* ############# */
+/* ############# */
+/* ############# */
+/* ############# */
+/* ############# */
+/* ############# */
+/* Reserve Styles */
+
+// .card_body:hover {
+//   //   background-color: $blue;
+//   //   transform: scale(1.04);
+//   //   .card_h {
+//   //     color: $white;
+//   //     transition: color 0.3s ease-out;
+//   //   }
+//   //   .card_p {
+//   //     color: $white;
+//   //     transition: color 0.3s ease-out;
+//   //   }
+//   //   .card_date {
+//   //     color: $gray-200;
+//   //     transition: color 0.3s ease-out;
+//   //   }
+
+//   //   transition: background-color 0.3s ease-in-out, transform 0.3s ease-out;
+// }

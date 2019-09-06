@@ -8,11 +8,7 @@ import {
   NavbarBrand,
   Nav,
   NavItem,
-  NavLink,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem
+  NavLink
 } from "./node_modules/reactstrap";
 import styles from "./Navbar.module.scss";
 import { Link } from "./node_modules/react-router-dom";

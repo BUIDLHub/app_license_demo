@@ -1,11 +1,10 @@
 import React, { Component } from "react";
 import classNames from "classnames";
 import styles from "./NewVendor.module.scss";
-import FormCard from "./Card";
+import FormCard from "Components/Card";
 
 export class CreateVendor extends Component {
   continue = e => {
-    console.log("Ayo I was clicked man");
     e.preventDefault();
     this.props.nextStep();
   };

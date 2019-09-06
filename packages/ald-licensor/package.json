@@ -15,15 +15,19 @@
     "react": "^16.9.0",
     "react-bootstrap": "^1.0.0-beta.11",
     "react-dom": "^16.9.0",
+    "react-loadable": "^5.5.0",
+    "react-loading": "^2.0.3",
     "react-redux": "^7.1.0",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.1.1",
+    "react-step-wizard": "^5.3.0",
     "react-toastify": "^5.3.2",
     "reactstrap": "^8.0.1",
     "redux": "^4.0.4",
     "redux-thunk": "^2.3.0",
     "reduxsauce": "^1.1.0",
-    "web3": "^1.2.1"
+    "web3": "^1.2.1",
+    "yup": "^0.27.0"
   },
   "devDependencies": {
     "redux-logger": "^3.0.6"
@@ -32,7 +36,8 @@
     "start": "cross-env NODE_PATH=src SASS_PATH=node_modules:src/scss react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lerna-build": "lerna bootstrap --scope=ald-licensor"
   },
   "eslintConfig": {
     "extends": "react-app"

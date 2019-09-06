@@ -2,6 +2,7 @@ import {Creators} from './actions';
 import {default as chainOps} from 'Redux/chain/operations';
 import {default as dbOps} from 'Redux/cache/operations';
 import {default as middlewareOps} from 'Redux/middleware/operations';
+import {default as prodOps} from 'Redux/products/operations';
 
 const initChain = props => {
   return props.dispatch(chainOps.init())
@@ -16,6 +17,11 @@ const initStorage = props => {
 const initMiddleware = async props => {
   return props.dispatch(middlewareOps.init())
     .then(()=>props)
+}
+
+const initProducts = async props => {
+  return props.dispatch(prodOps.init())
+    .then(()=>props);
 }
 
 const recoverHistory = async props => {
@@ -43,6 +49,7 @@ const _doStart = () => (dispatch,getState) => {
   return initChain(props)
         .then(initStorage)
         .then(initMiddleware)
+        .then(initProducts)
         .then(recoverHistory)
         .then(startSubscriptions)
         .then(()=>{

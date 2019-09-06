@@ -1,50 +1,59 @@
-import React, { Fragment, Component } from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Redirect, Route, Switch } from "react-router-dom";
-import MainRoute from "Routes/main";
-// import error from "Routes/error";                <<< define error
-// import { default as initOps } from "Redux/init/operations";
+import { BrowserRouter as Router, Redirect, Route,Switch } from "react-router-dom";
+import Portfolio from 'Routes/Portfolio';
+import error from "Routes/Error";
+import {default as initOps} from 'Redux/init/operations';
 
-const DEF_START = "/main";
+import Navigation from "Components/Navbar";
+import Footer from "Views/Footer";
+import { ToastContainer } from "react-toastify";
+
+const DEF_START = "/portfolio"
 
 class AppStart extends Component {
-  //     componentDidMount() {
-  //     if(this.props.needsInit) {
-  //       this.props.callInit();                     <<<< check for this
-  //     }
-  //   }
+  componentWillMount() {
+    if(this.props.needsInit) {
+      this.props.callInit();
+    }
+  }
 
   render() {
     const { location, match } = this.props;
-    if (location.pathname === "/") {
-      return <Redirect to={DEF_START} />;
+    if (location.pathname === '/') {
+      return (<Redirect to={DEF_START} />);
     }
 
     return (
-      <Fragment>
-        <Switch>
-          <Route path={`${match.url}main`} component={MainRoute} />
-          <Route path={`/error`} component={error} />
-          <Redirect to="/error" />
-        </Switch>
-      </Fragment>
-    );
+        <Router>
+          <div className="App">
+            <Navigation />
+            <ToastContainer />
+            <header className="page">
+              {/* <Licensor /> */}
+              <Switch>
+                <Route path="/portfolio" component={Portfolio} />
+                <Route path={`/error`} component={error} />
+                <Redirect to="/error" />
+              </Switch>
+            </header>
+            <Footer />
+          </div>
+        </Router>
+      );
   }
 }
 
 const s2p = state => {
-  //   return {
-  //     needsInit: !state.init.initComplete && !state.init.initStarted           <<<< check for this
-  //   }
-};
+  return {
+    needsInit: !state.init.initComplete && !state.init.initStarted
+  }
+}
 
 const d2p = dispatch => {
-  //   return {
-  //     callInit: () => dispatch(initOps.start())
-  //   }
-};
+  return {
+    callInit: () => dispatch(initOps.start())
+  }
+}
 
-export default connect(
-  s2p,
-  d2p
-)(AppStart);
+export default connect(s2p, d2p)(AppStart);

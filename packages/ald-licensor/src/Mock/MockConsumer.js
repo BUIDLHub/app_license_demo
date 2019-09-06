@@ -1,5 +1,6 @@
 import Base from './Base';
-import * as DBNames from './DBNames';
+import * as DBNames from 'Redux/cache/DBNames';
+
 import {Logger, sleep} from 'buidl-utils';
 import {
     License

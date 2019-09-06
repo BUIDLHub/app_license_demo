@@ -1,9 +1,7 @@
 import {Creators} from './actions';
-import {registerDeps} from 'Redux/DepMiddleware';
 import Web3 from 'web3';
 import { toast,Flip } from 'react-toastify';
 import React from 'react';
-
 
 
 const init = () => async (dispatch, getState) => {

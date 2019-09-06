@@ -1,0 +1,42 @@
+@import "../../GlobalStyles/global.scss";
+
+.loader {
+  padding-top: 15px;
+  
+  //half width minus roughly half width of spinner
+  padding-left: calc(50% - 43px);
+}
+
+.loader_h {
+  margin: auto;
+  text-align: center;
+  color: $black;
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+  @include xs() {
+    font-size: 1.65rem;
+    line-height: 1.5rem;
+  }
+}
+
+.loader_p {
+  margin: auto;
+  text-align: center;
+  color: $black;
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+  @include xs() {
+    font-size: 0.8rem;
+    line-height: 0.85rem;
+    padding: 0.25rem;
+    margin-top: 0.5rem;
+  }
+  @include sm() {
+    font-size: 0.85rem;
+    line-height: 0.9rem;
+  }
+  @include lg() {
+    font-size: 1rem;
+    line-height: 1.05rem;
+  }
+}
